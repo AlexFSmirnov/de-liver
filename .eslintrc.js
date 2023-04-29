@@ -1,0 +1,60 @@
+module.exports = {
+    env: {
+        browser: true,
+        es6: true,
+    },
+    parser: '@typescript-eslint/parser',
+    root: true,
+    plugins: ['@typescript-eslint/eslint-plugin', 'prettier', 'import'],
+    extends: [
+        'airbnb',
+        'plugin:@typescript-eslint/recommended',
+        'plugin:prettier/recommended',
+        'prettier',
+        'eslint-config-prettier',
+        'plugin:import/recommended',
+        'plugin:import/typescript',
+        'plugin:react/recommended',
+    ],
+    parserOptions: {
+        ecmaFeatures: {
+            jsx: true,
+        },
+        tsconfigRootDir: process.cwd(),
+        sourceType: 'module',
+    },
+    ignorePatterns: ['.eslintrc.js'],
+    settings: {
+        react: {
+            version: '999.999.999',
+        },
+    },
+    rules: {
+        '@typescript-eslint/interface-name-prefix': 'off',
+        '@typescript-eslint/explicit-function-return-type': 'off',
+        '@typescript-eslint/explicit-module-boundary-types': 'off',
+        '@typescript-eslint/no-explicit-any': 'error',
+        'import/prefer-default-export': 'off',
+        'import/extensions': 'off',
+        'import/no-extraneous-dependencies': 'off',
+        'no-useless-constructor': 'off',
+        'no-shadow': 'off',
+        'lines-between-class-members': 'off',
+        'no-plusplus': 'off',
+        'sort-imports': 'off',
+        'import/order': [
+            'error',
+            {
+                groups: ['builtin', 'external', 'internal', 'parent', 'sibling', 'index'],
+                alphabetize: { order: 'asc', caseInsensitive: true },
+                'newlines-between': 'ignore',
+            },
+        ],
+        'class-methods-use-this': 'off',
+        'prefer-destructuring': 'off',
+        'react/jsx-filename-extension': [1, { extensions: ['.tsx', '.jsx'] }],
+        'react/react-in-jsx-scope': 'off',
+        'react/function-component-definition': 'off',
+        'react/prop-types': 'off',
+    },
+};
