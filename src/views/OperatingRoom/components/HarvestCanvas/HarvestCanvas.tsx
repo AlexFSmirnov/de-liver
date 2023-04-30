@@ -9,7 +9,13 @@ import {
     PublicImage,
     usePublicImages,
 } from '../../../../common';
-import { GameScreen, getActiveScreen, getCurrentTarget, setMinigameOrgan } from '../../../../state';
+import {
+    GameScreen,
+    getActiveScreen,
+    getCurrentTarget,
+    getIsHarvestComplete,
+    setMinigameOrgan,
+} from '../../../../state';
 import { StoreProps } from '../../../../state/store';
 import { Canvas } from '../Canvas';
 import {
@@ -25,6 +31,7 @@ const connectHarvestCanvas = connect(
     createStructuredSelector({
         activeScreen: getActiveScreen,
         currentTarget: getCurrentTarget,
+        isHarvestComplete: getIsHarvestComplete,
     }),
     {
         setMinigameOrgan,
@@ -63,6 +70,7 @@ enum HarvestStage {
 const HarvestCanvasBase: React.FC<HarvestCanvasProps> = ({
     activeScreen,
     currentTarget,
+    isHarvestComplete,
     setMinigameOrgan,
 }) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -206,11 +214,20 @@ const HarvestCanvasBase: React.FC<HarvestCanvasProps> = ({
         }
     };
 
-    if (activeScreen !== GameScreen.Operating) {
-        return null;
+    if (currentTarget && (activeScreen === GameScreen.Operating || isHarvestComplete)) {
+        return (
+            <Canvas
+                ref={canvasRef}
+                onMouseMove={handleMouseMove}
+                onClick={handleMouseClick}
+                style={{
+                    pointerEvents: activeScreen === GameScreen.Operating ? 'auto' : 'none',
+                }}
+            />
+        );
     }
 
-    return <Canvas ref={canvasRef} onMouseMove={handleMouseMove} onClick={handleMouseClick} />;
+    return null;
 };
 
 export const HarvestCanvas = connectHarvestCanvas(HarvestCanvasBase);

@@ -11,6 +11,8 @@ import {
     getCurrentTarget,
     getShopToolLevel,
     navigateToScreen,
+    sendBubbleMessage,
+    setHarvestComplete,
 } from '../../../../state';
 import { StoreProps } from '../../../../state/store';
 import { DangerEffect, MinigameCanvas, MinigameModalContainer, MinigameModalImage } from './style';
@@ -26,6 +28,8 @@ const connectMinigameModal = connect(
         addOrgan,
         clearMinigameOrgan,
         navigateToScreen,
+        sendBubbleMessage,
+        setHarvestComplete,
     }
 );
 
@@ -57,6 +61,8 @@ const MinigameModalBase: React.FC<MinigameModalProps> = ({
     addOrgan,
     clearMinigameOrgan,
     navigateToScreen,
+    sendBubbleMessage,
+    setHarvestComplete,
 }) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const linePreviewCanvasRef = useRef<HTMLCanvasElement>(null);
@@ -191,7 +197,7 @@ const MinigameModalBase: React.FC<MinigameModalProps> = ({
 
     useEffect(draw, [draw, canvasRef.current]);
 
-    const processOrgan = (damage: 0 | 1 | 2 | 3) => {
+    const processOrgan = (damage: 0 | 1 | 2 | 3, sendMessage = true) => {
         if (!currentOrgan) {
             return;
         }
@@ -200,26 +206,43 @@ const MinigameModalBase: React.FC<MinigameModalProps> = ({
 
         switch (damage) {
             case 0:
+                if (sendMessage) sendBubbleMessage('Nice! That was a clean cut!');
                 addOrgan({ organ, quality });
                 break;
             case 1:
                 if (quality === OrganQuality.Bad) {
-                    console.log('Organ destroyed');
+                    if (sendMessage)
+                        sendBubbleMessage(
+                            `Decent cut, but the organ was terrible to begin with. Can't use it now.`
+                        );
                 } else {
-                    console.log('Organ damaged');
+                    if (sendMessage)
+                        sendBubbleMessage(
+                            `Oops, made a small mistake. It's fine, I can still sell it.`
+                        );
                     addOrgan({ organ, quality: quality - 1 });
                 }
                 break;
             case 2:
                 if (quality === OrganQuality.Good) {
-                    console.log('Organ damaged');
+                    if (sendMessage)
+                        sendBubbleMessage(
+                            `Ouch, that was a really bad cut. This organ won't be worth much now, but I can still sell it.`
+                        );
                     addOrgan({ organ, quality: quality - 2 });
                 } else {
-                    console.log('Organ destroyed');
+                    // eslint-disable-next-line no-lonely-if
+                    if (sendMessage)
+                        sendBubbleMessage(
+                            `Ouch, that was a really bad cut. The organ's ruined now.`
+                        );
                 }
                 break;
             case 3:
-                console.log('Organ destroyed');
+                if (sendMessage)
+                    sendBubbleMessage(
+                        `Wow, I managed to cut the organ in half! Nobody's gonna buy this.`
+                    );
                 break;
             default:
                 break;
@@ -282,13 +305,16 @@ const MinigameModalBase: React.FC<MinigameModalProps> = ({
 
                     processOrgan(damage);
                 } else {
-                    console.log('cut fail, organ destroyed');
-                    processOrgan(3);
+                    sendBubbleMessage(
+                        `I need to cut the whole thing out in one go. This organ's useless now, better be careful with the next one.`
+                    );
+                    processOrgan(3, false);
                 }
                 clearMinigameOrgan();
 
                 if (currentOrgan?.organ === Organ.Kidneys) {
-                    console.log('Harvest complete!');
+                    sendBubbleMessage(`Nice! That wasn't too bad. What's next?`);
+                    setHarvestComplete(true);
                     navigateToScreen(GameScreen.Main);
                 }
 
@@ -309,6 +335,14 @@ const MinigameModalBase: React.FC<MinigameModalProps> = ({
                     (quality === OrganQuality.Bad && dangerCounter > 0)
                 ) {
                     processOrgan(3);
+
+                    if (currentOrgan?.organ === Organ.Kidneys) {
+                        sendBubbleMessage(
+                            `Not the best finisher, but I got the job done. What's next?`
+                        );
+                        setHarvestComplete(true);
+                        navigateToScreen(GameScreen.Main);
+                    }
                 }
             }
         } else {
@@ -324,11 +358,14 @@ const MinigameModalBase: React.FC<MinigameModalProps> = ({
     };
 
     const handleMouseUp = () => {
-        console.log('I must finish the cut, organ destroyed!');
+        sendBubbleMessage(
+            `I need to cut the whole thing out in one go. This organ's useless now, better be careful with the next one.`
+        );
         clearMinigameOrgan();
 
         if (currentOrgan?.organ === Organ.Kidneys) {
-            console.log('Harvest complete!');
+            sendBubbleMessage(`Not the best finisher, but I got the job done. What's next?`);
+            setHarvestComplete(true);
             navigateToScreen(GameScreen.Main);
         }
 
@@ -353,7 +390,6 @@ const MinigameModalBase: React.FC<MinigameModalProps> = ({
             <DangerEffect active={isDangerActive} />
         </MinigameModalContainer>
     );
-    // <Canvas ref={canvasRef} onMouseMove={handleMouseMove} onClick={handleMouseClick} />;
 };
 
 export const MinigameModal = connectMinigameModal(MinigameModalBase);

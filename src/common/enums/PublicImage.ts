@@ -53,5 +53,6 @@ export enum PublicImage {
     StomachTools3 = 'cutouts/Stomach-tools-3.png',
 
     // UI
-    MinigameBackground = 'ui/minigame-background.png',
+    MinigameBackground = 'ui/Minigame-background.png',
+    BubbleMessageBackground = 'ui/Bubble-message-background.png',
 }

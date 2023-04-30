@@ -1,6 +1,12 @@
 import styled, { createGlobalStyle } from 'styled-components';
+import JoystixMonospace from './common/assets/JoystixMonospace.otf';
 
 export const GlobalStyle = createGlobalStyle`
+    @font-face {
+        font-family: 'Joystix Monospace';
+        src: url(${JoystixMonospace}) format('opentype');
+    }
+
     * {
         margin: 0;
         padding: 0;

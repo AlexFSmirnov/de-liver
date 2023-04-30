@@ -2,7 +2,13 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { isPointInRect, maybeDrawImage, PublicImage, usePublicImages } from '../../../../common';
-import { GameScreen, getActiveScreen, getCurrentTarget, navigateToScreen } from '../../../../state';
+import {
+    GameScreen,
+    getActiveScreen,
+    getCurrentTarget,
+    getIsHarvestComplete,
+    navigateToScreen,
+} from '../../../../state';
 import { StoreProps } from '../../../../state/store';
 import { Canvas } from '../Canvas';
 import { HUNT_BUTTON_RECT, OPERATE_BUTTON_RECT, SHOP_BUTTON_RECT } from './constants';
@@ -11,6 +17,7 @@ const connectMainCanvas = connect(
     createStructuredSelector({
         activeScreen: getActiveScreen,
         currentTarget: getCurrentTarget,
+        isHarvestComplete: getIsHarvestComplete,
     }),
     {
         navigateToScreen,
@@ -35,6 +42,7 @@ const mainCanvasImages = {
 const MainCanvasBase: React.FC<MainCanvasProps> = ({
     activeScreen,
     currentTarget,
+    isHarvestComplete,
     navigateToScreen,
 }) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -53,7 +61,7 @@ const MainCanvasBase: React.FC<MainCanvasProps> = ({
         if (!ctx) return;
 
         maybeDrawImage(ctx, currentTarget ? images.basePerson : images.base, 0, 0);
-        if (currentTarget && activeScreen === GameScreen.Main) {
+        if (currentTarget && activeScreen === GameScreen.Main && !isHarvestComplete) {
             maybeDrawImage(ctx, images.personSheetCover, 0, 0);
             maybeDrawImage(ctx, isHarvestHovered ? images.harvestActive : images.harvest, 0, 0);
         }
@@ -74,6 +82,7 @@ const MainCanvasBase: React.FC<MainCanvasProps> = ({
         isHarvestHovered,
         isShopHovered,
         isHuntHovered,
+        isHarvestComplete,
     ]);
 
     useEffect(draw, [draw, canvasRef.current]);

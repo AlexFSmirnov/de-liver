@@ -25,6 +25,8 @@ interface GameState {
 
     currentTarget: CurrentTarget | null;
     currentMinigameOrgan: MinigameOrgan | null;
+
+    harvestComplete: boolean;
 }
 
 const initialState: GameState = {
@@ -33,6 +35,7 @@ const initialState: GameState = {
         todo: 'todo',
     },
     currentMinigameOrgan: null,
+    harvestComplete: false,
 };
 
 export const gameStateSlice = createSlice({
@@ -48,10 +51,14 @@ export const gameStateSlice = createSlice({
         clearMinigameOrgan: (state) => {
             state.currentMinigameOrgan = null;
         },
+        setHarvestComplete: (state, action: PayloadAction<boolean>) => {
+            state.harvestComplete = action.payload;
+        },
     },
 });
 
-export const { navigateToScreen, setMinigameOrgan, clearMinigameOrgan } = gameStateSlice.actions;
+export const { navigateToScreen, setMinigameOrgan, clearMinigameOrgan, setHarvestComplete } =
+    gameStateSlice.actions;
 
 export const getGameState = (state: State) => state.gameState;
 
@@ -61,5 +68,7 @@ export const getCurrentMinigameOrgan = createSelector(
     getGameState,
     (state) => state.currentMinigameOrgan
 );
+
+export const getIsHarvestComplete = createSelector(getGameState, (state) => state.harvestComplete);
 
 export default gameStateSlice.reducer;

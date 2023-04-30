@@ -1,11 +1,13 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import { InferableComponentEnhancerWithProps } from 'react-redux';
 import gameStateReducer from './slices/gameStateSlice';
-import shopSlice from './slices/shopSlice';
+import shopSliceReducer from './slices/shopSlice';
+import uiSliceReducer from './slices/uiSlice';
 
 const rootReducer = combineReducers({
     gameState: gameStateReducer,
-    shop: shopSlice,
+    shop: shopSliceReducer,
+    ui: uiSliceReducer,
 });
 
 export const store = configureStore({

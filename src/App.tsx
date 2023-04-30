@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { ASPECT_RATIO, CANVAS_HEIGHT, CANVAS_WIDTH } from './common';
+import { ASPECT_RATIO, BubbleMessage, CANVAS_HEIGHT, CANVAS_WIDTH } from './common';
 import { GameScreen, getActiveScreen } from './state';
 import { StoreProps } from './state/store';
 import { AppContainer, GameContainer, GameContainerProps } from './style';
@@ -69,6 +69,7 @@ const AppBase: React.FC<AppProps> = ({ activeScreen }) => {
             {/* @ts-ignore */}
             <GameContainer {...gameContainerPosition}>
                 <OperatingRoom containerSize={gameContainerPosition} />
+                <BubbleMessage />
             </GameContainer>
         </AppContainer>
     );
