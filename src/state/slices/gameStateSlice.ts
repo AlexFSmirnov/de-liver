@@ -21,8 +21,10 @@ interface GameState {
 }
 
 const initialState: GameState = {
-    activeScreen: GameScreen.Main,
-    currentTarget: null,
+    activeScreen: GameScreen.Operating,
+    currentTarget: {
+        todo: 'todo',
+    },
 };
 
 export const gameStateSlice = createSlice({
@@ -40,5 +42,6 @@ export const { navigateToScreen } = gameStateSlice.actions;
 export const getGameState = (state: State) => state.gameState;
 
 export const getActiveScreen = createSelector(getGameState, (state) => state.activeScreen);
+export const getCurrentTarget = createSelector(getGameState, (state) => state.currentTarget);
 
 export default gameStateSlice.reducer;

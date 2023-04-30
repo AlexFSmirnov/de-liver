@@ -1,9 +1,21 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
-import { ASPECT_RATIO } from './common';
-import { AppContainer, GameContainer, GameContainerProps } from './style';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+import { ASPECT_RATIO, CANVAS_HEIGHT, CANVAS_WIDTH } from './common';
+import { GameScreen, getActiveScreen } from './state';
+import { StoreProps } from './state/store';
+import { AppContainer, GameContainer, GameContainerProps, ZoomContainer } from './style';
 import { OperatingRoom } from './views/OperatingRoom';
 
-export const App = () => {
+const connectApp = connect(
+    createStructuredSelector({
+        activeScreen: getActiveScreen,
+    })
+);
+
+type AppProps = StoreProps<typeof connectApp>;
+
+const AppBase: React.FC<AppProps> = ({ activeScreen }) => {
     const containerRef = useRef<HTMLDivElement>(null);
 
     const [gameContainerPosition, setGameContainerPosition] = useState<GameContainerProps>({
@@ -18,7 +30,6 @@ export const App = () => {
         if (!container) {
             return;
         }
-        console.log('handleContainerResize');
 
         const { width: containerWidth, height: containerHeight } =
             container.getBoundingClientRect();
@@ -52,11 +63,24 @@ export const App = () => {
         };
     }, []);
 
+    let zoomContainerTransform;
+    if (activeScreen === GameScreen.Operating) {
+        const xOffset = (19 / CANVAS_WIDTH) * gameContainerPosition.width;
+        const yOffset = (10.5 / CANVAS_HEIGHT) * gameContainerPosition.height;
+        zoomContainerTransform = `scale(7) translate(${xOffset}px, -${yOffset}px)`;
+    }
+
     return (
         <AppContainer ref={containerRef}>
+            {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+            {/* @ts-ignore */}
             <GameContainer {...gameContainerPosition}>
-                <OperatingRoom />
+                <ZoomContainer transform={zoomContainerTransform}>
+                    <OperatingRoom />
+                </ZoomContainer>
             </GameContainer>
         </AppContainer>
     );
 };
+
+export const App = connectApp(AppBase);

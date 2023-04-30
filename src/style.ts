@@ -30,6 +30,7 @@ export const AppContainer = styled.div`
     width: 100%;
     height: 100%;
     background-color: #111;
+    overflow: hidden;
 `;
 
 export interface GameContainerProps {
@@ -39,14 +40,31 @@ export interface GameContainerProps {
     height: number;
 }
 
-export const GameContainer = styled.div<GameContainerProps>`
+export const GameContainer = styled.div.attrs<GameContainerProps>((props) => ({
+    style: {
+        top: props.top,
+        left: props.left,
+        width: props.width,
+        height: props.height,
+    },
+}))`
     position: absolute;
-    top: ${(props) => props.top}px;
-    left: ${(props) => props.left}px;
-    width: ${(props) => props.width}px;
-    height: ${(props) => props.height}px;
+    transition: transform 0.5s ease-in-out;
 
     // TODO: Remove this border
     border: 1px solid red;
     box-sizing: border-box;
+
+    overflow: hidden;
+`;
+
+export const ZoomContainer = styled.div<{ transform?: string }>`
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    transform: ${({ transform }) => transform};
+    transition: transform 0.5s ease-in-out;
 `;
