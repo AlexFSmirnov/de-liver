@@ -8,11 +8,13 @@ export const GlobalStyle = createGlobalStyle`
     }
 
     * {
+        user-select: none;
         margin: 0;
         padding: 0;
         outline: none;
     }
     html {
+        font-family: 'Joystix Monospace';
         position: relative;
         width: 100vw;
         height: 100vh;
@@ -56,10 +58,5 @@ export const GameContainer = styled.div.attrs<GameContainerProps>((props) => ({
 }))`
     position: absolute;
     transition: transform 0.5s ease-in-out;
-
-    // TODO: Remove this border
-    border: 1px solid red;
-    box-sizing: border-box;
-
     overflow: hidden;
 `;

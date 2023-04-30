@@ -35,7 +35,12 @@ const OperatingRoomBase: React.FC<OperatingRoomProps> = ({
         const xOffset = (19 / CANVAS_WIDTH) * containerSize.width;
         const yOffset = (10.5 / CANVAS_HEIGHT) * containerSize.height;
         zoomContainerTransform = `scale(3) translate(${xOffset}px, -${yOffset}px)`;
+    } else if (activeScreen === GameScreen.Shop) {
+        const xOffset = (1 / CANVAS_WIDTH) * containerSize.width;
+        const yOffset = (70 / CANVAS_HEIGHT) * containerSize.height;
+        zoomContainerTransform = `scale(3) translate(-${xOffset}px, ${yOffset}px)`;
     }
+
     return (
         <OperatingRoomContainer>
             <ZoomContainer transform={zoomContainerTransform}>

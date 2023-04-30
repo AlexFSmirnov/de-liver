@@ -7,6 +7,7 @@ import { StoreProps } from './state/store';
 import { AppContainer, GameContainer, GameContainerProps } from './style';
 import { Hunt } from './views/Hunt';
 import { OperatingRoom } from './views/OperatingRoom';
+import { Shop } from './views/Shop';
 
 const connectApp = connect(
     createStructuredSelector({
@@ -71,6 +72,7 @@ const AppBase: React.FC<AppProps> = ({ activeScreen }) => {
             <GameContainer {...gameContainerPosition}>
                 <OperatingRoom containerSize={gameContainerPosition} />
                 <Hunt />
+                <Shop />
                 <BubbleMessage />
             </GameContainer>
         </AppContainer>

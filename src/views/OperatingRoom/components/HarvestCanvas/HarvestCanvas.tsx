@@ -5,7 +5,6 @@ import {
     isPointInRect,
     maybeDrawImage,
     Organ,
-    OrganQuality,
     PublicImage,
     usePublicImages,
 } from '../../../../common';
@@ -177,14 +176,18 @@ const HarvestCanvasBase: React.FC<HarvestCanvasProps> = ({
     };
 
     const handleMouseClick = () => {
-        if (!isMouseOverCurrentOrgan || currentHarvestStage === HarvestStage.Complete) {
+        if (
+            !currentTarget ||
+            !isMouseOverCurrentOrgan ||
+            currentHarvestStage === HarvestStage.Complete
+        ) {
             return;
         }
 
         setIsMouseOverCurrentOrgan(false);
 
-        // TODO: This should come from the current target
-        const quality = OrganQuality.Medium;
+        // TODO: Add visuals for reptiloids and cyborgs
+        const { quality } = currentTarget;
         switch (currentHarvestStage) {
             case HarvestStage.Liver:
                 setMinigameOrgan({ organ: Organ.Liver, quality });

@@ -58,4 +58,7 @@ export enum PublicImage {
     HuntBackground = 'ui/Hunt-background.png',
     HuntPersonElement = 'ui/Hunt-person-element.png',
     ScoreCardBackground = 'ui/Score-card-background.png',
+    ShopBackground = 'ui/Shop-background.png',
+    ShopItemBackground = 'ui/Shop-item-background.png',
+    RandomSquare = 'ui/Random-square.png',
 }

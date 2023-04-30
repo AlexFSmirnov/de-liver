@@ -68,12 +68,6 @@ const MainCanvasBase: React.FC<MainCanvasProps> = ({
 
         maybeDrawImage(ctx, isShopHovered ? images.shopActive : images.shop, 0, 0);
         maybeDrawImage(ctx, isHuntHovered ? images.huntActive : images.hunt, 0, 0);
-
-        // ctx.fillStyle = 'red';
-        // ctx.fillRect(canvas.width / 2 - 1, canvas.height / 2 - 1, 2, 2);
-
-        // ctx.fillStyle = 'blue';
-        // ctx.fillRect(canvas.width / 2 - 1 - 19, canvas.height / 2 - 1 + 10, 2, 2);
     }, [
         canvasRef.current,
         images,
@@ -106,7 +100,7 @@ const MainCanvasBase: React.FC<MainCanvasProps> = ({
 
     const handleMouseClick = () => {
         if (isShopHovered) {
-            console.log('shop');
+            navigateToScreen(GameScreen.Shop);
         }
 
         if (isHuntHovered) {
