@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
-import { Organ, OrganQuality } from '../../common';
+import { Organ, OrganQuality } from '../../common/enums';
 import type { State } from '../store';
 
 export enum GameScreen {

@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
-import { Organ, OrganQuality } from '../../common';
+import { Organ, OrganQuality } from '../../common/enums';
 import type { State } from '../store';
 
 // Category 1: Items to help capture a victim (cheapest to most expensive)
@@ -42,7 +42,6 @@ export const shopSlice = createSlice({
     reducers: {
         addOrgan: (state, action: PayloadAction<Pick<InventoryOrgan, 'organ' | 'quality'>>) => {
             const id = `${action.payload.organ}-${Date.now()}`;
-            console.log('Organ added!');
             state.organs[id] = {
                 id,
                 ...action.payload,
