@@ -57,4 +57,5 @@ export enum PublicImage {
     BubbleMessageBackground = 'ui/Bubble-message-background.png',
     HuntBackground = 'ui/Hunt-background.png',
     HuntPersonElement = 'ui/Hunt-person-element.png',
+    ScoreCardBackground = 'ui/Score-card-background.png',
 }

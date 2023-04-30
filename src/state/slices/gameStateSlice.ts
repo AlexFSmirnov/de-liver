@@ -29,13 +29,16 @@ interface GameState {
     currentMinigameOrgan: MinigameOrgan | null;
 
     harvestComplete: boolean;
+
+    score: number;
 }
 
 const initialState: GameState = {
-    activeScreen: GameScreen.Hunt,
+    activeScreen: GameScreen.Main,
     currentTarget: null,
     currentMinigameOrgan: null,
     harvestComplete: false,
+    score: 0,
 };
 
 export const gameStateSlice = createSlice({
@@ -57,6 +60,9 @@ export const gameStateSlice = createSlice({
         setCurrentTarget: (state, action: PayloadAction<CurrentTarget | null>) => {
             state.currentTarget = action.payload;
         },
+        increaseScore: (state, action: PayloadAction<number>) => {
+            state.score += action.payload;
+        },
     },
 });
 
@@ -66,6 +72,7 @@ export const {
     clearMinigameOrgan,
     setHarvestComplete,
     setCurrentTarget,
+    increaseScore,
 } = gameStateSlice.actions;
 
 export const getGameState = (state: State) => state.gameState;
@@ -78,5 +85,7 @@ export const getCurrentMinigameOrgan = createSelector(
 );
 
 export const getIsHarvestComplete = createSelector(getGameState, (state) => state.harvestComplete);
+
+export const getScore = createSelector(getGameState, (state) => state.score);
 
 export default gameStateSlice.reducer;
