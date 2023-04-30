@@ -56,5 +56,6 @@ module.exports = {
         'react/react-in-jsx-scope': 'off',
         'react/function-component-definition': 'off',
         'react/prop-types': 'off',
+        'react/jsx-props-no-spreading': 'off',
     },
 };
