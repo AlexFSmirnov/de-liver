@@ -34,7 +34,7 @@ const initialState: GameState = {
     currentTarget: {
         todo: 'todo',
     },
-    currentMinigameOrgan: MinigameOrgan.Liver,
+    currentMinigameOrgan: MinigameOrgan.Stomach,
 };
 
 export const gameStateSlice = createSlice({

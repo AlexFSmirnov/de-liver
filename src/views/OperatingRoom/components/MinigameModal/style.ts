@@ -26,3 +26,15 @@ export const MinigameCanvas = styled.canvas`
 
     image-rendering: pixelated;
 `;
+
+export const DangerEffect = styled.div<{ active?: boolean }>`
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: red;
+    opacity: ${({ active }) => (active ? 0.5 : 0)};
+    transition: opacity 0.1s ease-in-out;
+    pointer-events: none;
+`;
