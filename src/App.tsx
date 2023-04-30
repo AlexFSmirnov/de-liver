@@ -4,7 +4,7 @@ import { createStructuredSelector } from 'reselect';
 import { ASPECT_RATIO, CANVAS_HEIGHT, CANVAS_WIDTH } from './common';
 import { GameScreen, getActiveScreen } from './state';
 import { StoreProps } from './state/store';
-import { AppContainer, GameContainer, GameContainerProps, ZoomContainer } from './style';
+import { AppContainer, GameContainer, GameContainerProps } from './style';
 import { OperatingRoom } from './views/OperatingRoom';
 
 const connectApp = connect(
@@ -63,21 +63,12 @@ const AppBase: React.FC<AppProps> = ({ activeScreen }) => {
         };
     }, []);
 
-    let zoomContainerTransform;
-    if (activeScreen === GameScreen.Operating) {
-        const xOffset = (19 / CANVAS_WIDTH) * gameContainerPosition.width;
-        const yOffset = (10.5 / CANVAS_HEIGHT) * gameContainerPosition.height;
-        zoomContainerTransform = `scale(7) translate(${xOffset}px, -${yOffset}px)`;
-    }
-
     return (
         <AppContainer ref={containerRef}>
             {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
             {/* @ts-ignore */}
             <GameContainer {...gameContainerPosition}>
-                <ZoomContainer transform={zoomContainerTransform}>
-                    <OperatingRoom />
-                </ZoomContainer>
+                <OperatingRoom containerSize={gameContainerPosition} />
             </GameContainer>
         </AppContainer>
     );
