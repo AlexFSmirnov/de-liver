@@ -1,17 +1,18 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { isPointInRect, maybeDrawImage, PublicImage, usePublicImages } from '../../../../common';
+import { Organ, OrganQuality, PublicImage, usePublicImages } from '../../../../common';
 import {
+    addOrgan,
+    clearMinigameOrgan,
     GameScreen,
     getActiveScreen,
     getCurrentMinigameOrgan,
     getCurrentTarget,
-    MinigameOrgan,
+    getShopToolLevel,
     navigateToScreen,
 } from '../../../../state';
 import { StoreProps } from '../../../../state/store';
-import { Canvas } from '../Canvas';
 import { DangerEffect, MinigameCanvas, MinigameModalContainer, MinigameModalImage } from './style';
 
 const connectMinigameModal = connect(
@@ -19,14 +20,14 @@ const connectMinigameModal = connect(
         activeScreen: getActiveScreen,
         currentTarget: getCurrentTarget,
         currentOrgan: getCurrentMinigameOrgan,
+        toolsLevel: getShopToolLevel,
     }),
     {
+        addOrgan,
+        clearMinigameOrgan,
         navigateToScreen,
     }
 );
-
-// TODO: This will depend on the tools that are purchased
-const TOOLS_LEVEL = 0;
 
 type MinigameModalProps = StoreProps<typeof connectMinigameModal>;
 
@@ -52,6 +53,9 @@ const MinigameModalBase: React.FC<MinigameModalProps> = ({
     activeScreen,
     currentTarget,
     currentOrgan,
+    toolsLevel,
+    addOrgan,
+    clearMinigameOrgan,
     navigateToScreen,
 }) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -75,6 +79,20 @@ const MinigameModalBase: React.FC<MinigameModalProps> = ({
     const images = usePublicImages(minigameModalImages);
 
     useEffect(() => {
+        setIsMouseDown(false);
+        setLinePoints([]);
+        setCrossedSegments({});
+        setIsDangerActive(false);
+        setDangerCounter(0);
+
+        setTimeout(() => {
+            const { current: lineCanvas } = linePreviewCanvasRef;
+            const pctx = lineCanvas?.getContext('2d');
+            pctx?.clearRect(0, 0, lineCanvas?.width ?? 0, lineCanvas?.height ?? 0);
+        }, 400);
+    }, [currentOrgan]);
+
+    useEffect(() => {
         const { current: canvas } = canvasRef;
         if (!canvas) return;
 
@@ -90,33 +108,33 @@ const MinigameModalBase: React.FC<MinigameModalProps> = ({
         if (!ctx) return;
 
         let image;
-        switch (currentOrgan) {
-            case MinigameOrgan.Liver:
-                image = [images.liverTools1, images.liverTools2, images.liverTools3][TOOLS_LEVEL];
+        switch (currentOrgan?.organ) {
+            case Organ.Liver:
+                image = [images.liverTools1, images.liverTools2, images.liverTools3][toolsLevel];
                 break;
-            case MinigameOrgan.Kidneys:
+            case Organ.Kidneys:
                 image = [images.kidneysTools1, images.kidneysTools2, images.kidneysTools3][
-                    TOOLS_LEVEL
+                    toolsLevel
                 ];
                 break;
-            case MinigameOrgan.Stomach:
+            case Organ.Stomach:
                 image = [images.stomachTools1, images.stomachTools2, images.stomachTools3][
-                    TOOLS_LEVEL
+                    toolsLevel
                 ];
                 break;
-            case MinigameOrgan.SmallIntestine:
+            case Organ.SmallIntestine:
                 image = [
                     images.smallIntestineTools1,
                     images.smallIntestineTools2,
                     images.smallIntestineTools3,
-                ][TOOLS_LEVEL];
+                ][toolsLevel];
                 break;
-            case MinigameOrgan.LargeIntestine:
+            case Organ.LargeIntestine:
                 image = [
                     images.largeIntestineTools1,
                     images.largeIntestineTools2,
                     images.largeIntestineTools3,
-                ][TOOLS_LEVEL];
+                ][toolsLevel];
                 break;
             default:
                 return;
@@ -173,6 +191,43 @@ const MinigameModalBase: React.FC<MinigameModalProps> = ({
 
     useEffect(draw, [draw, canvasRef.current]);
 
+    const processOrgan = (damage: 0 | 1 | 2 | 3) => {
+        if (!currentOrgan) {
+            return;
+        }
+
+        const { organ, quality } = currentOrgan;
+
+        switch (damage) {
+            case 0:
+                addOrgan({ organ, quality });
+                break;
+            case 1:
+                if (quality === OrganQuality.Bad) {
+                    console.log('Organ destroyed');
+                } else {
+                    console.log('Organ damaged');
+                    addOrgan({ organ, quality: quality - 1 });
+                }
+                break;
+            case 2:
+                if (quality === OrganQuality.Good) {
+                    console.log('Organ damaged');
+                    addOrgan({ organ, quality: quality - 2 });
+                } else {
+                    console.log('Organ destroyed');
+                }
+                break;
+            case 3:
+                console.log('Organ destroyed');
+                break;
+            default:
+                break;
+        }
+
+        clearMinigameOrgan();
+    };
+
     const handleMouseMove = (e: React.MouseEvent<HTMLCanvasElement, MouseEvent>) => {
         const { current: canvas } = canvasRef;
         const ctx = canvas?.getContext('2d');
@@ -214,11 +269,29 @@ const MinigameModalBase: React.FC<MinigameModalProps> = ({
                     crossedSegments.left &&
                     crossedSegments.right
                 ) {
-                    console.log('cut success');
-                    console.log(dangerCounter);
+                    let damage: 0 | 1 | 2 | 3 = 0;
+                    if (dangerCounter === 0) {
+                        damage = 0;
+                    } else if (dangerCounter < 40) {
+                        damage = 1;
+                    } else if (dangerCounter < 90) {
+                        damage = 2;
+                    } else {
+                        damage = 3;
+                    }
+
+                    processOrgan(damage);
                 } else {
-                    console.log('cut fail');
+                    console.log('cut fail, organ destroyed');
+                    processOrgan(3);
                 }
+                clearMinigameOrgan();
+
+                if (currentOrgan?.organ === Organ.Kidneys) {
+                    console.log('Harvest complete!');
+                    navigateToScreen(GameScreen.Main);
+                }
+
                 break;
             }
         }
@@ -227,6 +300,17 @@ const MinigameModalBase: React.FC<MinigameModalProps> = ({
         if (r !== 255 || g !== 255 || b !== 255 || a !== 255) {
             setIsDangerActive(true);
             setDangerCounter(dangerCounter + 1);
+
+            if (currentOrgan) {
+                const { quality } = currentOrgan;
+                if (
+                    (quality === OrganQuality.Good && dangerCounter > 90) ||
+                    (quality === OrganQuality.Medium && dangerCounter > 40) ||
+                    (quality === OrganQuality.Bad && dangerCounter > 0)
+                ) {
+                    processOrgan(3);
+                }
+            }
         } else {
             setIsDangerActive(false);
         }
@@ -240,11 +324,19 @@ const MinigameModalBase: React.FC<MinigameModalProps> = ({
     };
 
     const handleMouseUp = () => {
+        console.log('I must finish the cut, organ destroyed!');
+        clearMinigameOrgan();
+
+        if (currentOrgan?.organ === Organ.Kidneys) {
+            console.log('Harvest complete!');
+            navigateToScreen(GameScreen.Main);
+        }
+
         setIsMouseDown(false);
     };
 
     return (
-        <MinigameModalContainer>
+        <MinigameModalContainer active={currentOrgan !== null}>
             <MinigameModalImage src={`images/${PublicImage.MinigameBackground}`} />
             <MinigameCanvas
                 ref={canvasRef}

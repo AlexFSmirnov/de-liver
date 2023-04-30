@@ -1,6 +1,7 @@
 /* eslint-disable no-param-reassign */
 import { createSlice, PayloadAction } from '@reduxjs/toolkit';
 import { createSelector } from 'reselect';
+import { Organ, OrganQuality } from '../../common';
 import type { State } from '../store';
 
 export enum GameScreen {
@@ -10,16 +11,13 @@ export enum GameScreen {
     Hunt = 'Hunt',
 }
 
-export enum MinigameOrgan {
-    Liver,
-    Stomach,
-    LargeIntestine,
-    SmallIntestine,
-    Kidneys,
-}
-
 interface CurrentTarget {
     todo: string;
+}
+
+interface MinigameOrgan {
+    organ: Organ;
+    quality: OrganQuality;
 }
 
 interface GameState {
@@ -30,11 +28,11 @@ interface GameState {
 }
 
 const initialState: GameState = {
-    activeScreen: GameScreen.Operating,
+    activeScreen: GameScreen.Main,
     currentTarget: {
         todo: 'todo',
     },
-    currentMinigameOrgan: MinigameOrgan.Stomach,
+    currentMinigameOrgan: null,
 };
 
 export const gameStateSlice = createSlice({

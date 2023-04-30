@@ -1,8 +1,15 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { isPointInRect, maybeDrawImage, PublicImage, usePublicImages } from '../../../../common';
-import { GameScreen, getActiveScreen, getCurrentTarget, navigateToScreen } from '../../../../state';
+import {
+    isPointInRect,
+    maybeDrawImage,
+    Organ,
+    OrganQuality,
+    PublicImage,
+    usePublicImages,
+} from '../../../../common';
+import { GameScreen, getActiveScreen, getCurrentTarget, setMinigameOrgan } from '../../../../state';
 import { StoreProps } from '../../../../state/store';
 import { Canvas } from '../Canvas';
 import {
@@ -20,7 +27,7 @@ const connectHarvestCanvas = connect(
         currentTarget: getCurrentTarget,
     }),
     {
-        navigateToScreen,
+        setMinigameOrgan,
     }
 );
 
@@ -56,7 +63,7 @@ enum HarvestStage {
 const HarvestCanvasBase: React.FC<HarvestCanvasProps> = ({
     activeScreen,
     currentTarget,
-    navigateToScreen,
+    setMinigameOrgan,
 }) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -167,10 +174,35 @@ const HarvestCanvasBase: React.FC<HarvestCanvasProps> = ({
         }
 
         setIsMouseOverCurrentOrgan(false);
-        setCurrentHarvestStage(currentHarvestStage + 1);
 
-        if (currentHarvestStage === HarvestStage.Kidneys) {
-            console.log('Harvest complete!');
+        // TODO: This should come from the current target
+        const quality = OrganQuality.Medium;
+        switch (currentHarvestStage) {
+            case HarvestStage.Liver:
+                setMinigameOrgan({ organ: Organ.Liver, quality });
+                break;
+            case HarvestStage.Stomach:
+                setMinigameOrgan({ organ: Organ.Stomach, quality });
+                break;
+            case HarvestStage.LargeIntestine:
+                setMinigameOrgan({ organ: Organ.LargeIntestine, quality });
+                break;
+            case HarvestStage.SmallIntestine:
+                setMinigameOrgan({ organ: Organ.SmallIntestine, quality });
+                break;
+            case HarvestStage.Kidneys:
+                setMinigameOrgan({ organ: Organ.Kidneys, quality });
+                break;
+            default:
+                break;
+        }
+
+        if (currentHarvestStage === HarvestStage.Skin) {
+            setCurrentHarvestStage(currentHarvestStage + 1);
+        } else {
+            setTimeout(() => {
+                setCurrentHarvestStage(currentHarvestStage + 1);
+            }, 400);
         }
     };
 
