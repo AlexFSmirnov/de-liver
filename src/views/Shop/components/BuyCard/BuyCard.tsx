@@ -1,6 +1,5 @@
 import { PublicImage } from '../../../../common';
 import {
-    BuyButton,
     BuyCardActionsWrapper,
     BuyCardContainer,
     BuyCardContentWrapper,
@@ -9,40 +8,35 @@ import {
     BuyCardName,
     BuyCardPreviewImage,
     BuyCardTextWrapper,
-    Price,
 } from './style';
 
 interface BuyCardProps {
     name: string;
+    description: string;
+    image: PublicImage;
     hidden?: boolean;
 }
 
-export const BuyCard: React.FC<BuyCardProps> = ({ name, hidden }) => {
+export const BuyCard: React.FC<BuyCardProps> = ({ name, description, image, hidden }) => {
     return (
         <BuyCardContainer>
             <BuyCardImage src={`images/${PublicImage.ShopItemBackground}`} />
             <BuyCardContentWrapper>
-                <BuyCardPreviewImage
-                    unavailable={hidden}
-                    src={`images/${PublicImage.RandomSquare}`}
-                />
+                <BuyCardPreviewImage unavailable={hidden} src={`images/${image}`} />
                 {hidden ? (
                     <BuyCardTextWrapper>
                         <BuyCardName>Not available yet</BuyCardName>
-                        <BuyCardDescription>Come back later.</BuyCardDescription>
+                        <BuyCardDescription>Check back later.</BuyCardDescription>
                     </BuyCardTextWrapper>
                 ) : (
                     <>
                         <BuyCardTextWrapper>
-                            <BuyCardName>Social Media Monitoring</BuyCardName>
-                            <BuyCardDescription>
-                                State-of-the-art global tracking technology that enables efficient
-                                and accurate victim location monitoring.
-                            </BuyCardDescription>
+                            <BuyCardName>{name}</BuyCardName>
+                            <BuyCardDescription>{description}</BuyCardDescription>
                         </BuyCardTextWrapper>
                         <BuyCardActionsWrapper disabled>
                             <span>Buy</span>
-                            <span>$300000</span>
+                            <span>$30000</span>
                         </BuyCardActionsWrapper>
                     </>
                 )}

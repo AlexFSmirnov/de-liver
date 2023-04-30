@@ -61,4 +61,16 @@ export enum PublicImage {
     ShopBackground = 'ui/Shop-background.png',
     ShopItemBackground = 'ui/Shop-item-background.png',
     RandomSquare = 'ui/Random-square.png',
+
+    // Shop
+    Taser = 'shop/Taser.png',
+    NetLauncher = 'shop/Net-launcher.png',
+    GrapplingHook = 'shop/Grappling-hook.png',
+    TranquilizerRifle = 'shop/Tranquilizer-rifle.png',
+    TimeStop = 'shop/Time-stop.png',
+    DisguiseKit = 'shop/Disguise-kit.png',
+    SocialMedia = 'shop/Social-media.png',
+    NightVision = 'shop/Night-vision.png',
+    BlackVan = 'shop/Black-van.png',
+    SatelliteSurveillance = 'shop/Satellite-surveillance.png',
 }

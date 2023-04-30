@@ -34,7 +34,14 @@ export const BuyCardPreviewImage = styled.img<{ unavailable?: boolean }>`
     height: 90%;
     max-height: 90%;
 
-    ${({ unavailable }) => (unavailable ? 'filter: brightness(0);' : '')}
+    ${({ unavailable }) =>
+        unavailable
+            ? `
+        filter: brightness(0) saturate(0) invert(0) blur(0.4vw);
+    `
+            : ''}
+
+    image-rendering: pixelated;
 `;
 
 export const BuyCardTextWrapper = styled.div`
@@ -56,7 +63,7 @@ export const BuyCardDescription = styled.div`
 `;
 
 export const BuyCardActionsWrapper = styled.div<{ disabled?: boolean }>`
-    width: 18%;
+    width: 20%;
     height: 100%;
     padding: 0 2%;
     box-sizing: border-box;
