@@ -26,7 +26,7 @@ const BubbleMessageBase: React.FC<BubbleMessageProps> = ({ message, clearBubbleM
             const timeout = setTimeout(() => {
                 setLocalMessage('');
                 clearBubbleMessage();
-            }, 3000);
+            }, 4000);
 
             return () => {
                 clearTimeout(timeout);

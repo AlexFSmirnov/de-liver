@@ -11,7 +11,7 @@ import {
     getCurrentTarget,
     getShopToolLevel,
     navigateToScreen,
-    sendBubbleMessage,
+    sendRandomBubbleMessage,
     setHarvestComplete,
 } from '../../../../state';
 import { StoreProps } from '../../../../state/store';
@@ -28,7 +28,7 @@ const connectMinigameModal = connect(
         addOrgan,
         clearMinigameOrgan,
         navigateToScreen,
-        sendBubbleMessage,
+        sendRandomBubbleMessage,
         setHarvestComplete,
     }
 );
@@ -61,7 +61,7 @@ const MinigameModalBase: React.FC<MinigameModalProps> = ({
     addOrgan,
     clearMinigameOrgan,
     navigateToScreen,
-    sendBubbleMessage,
+    sendRandomBubbleMessage,
     setHarvestComplete,
 }) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -206,43 +206,59 @@ const MinigameModalBase: React.FC<MinigameModalProps> = ({
 
         switch (damage) {
             case 0:
-                if (sendMessage) sendBubbleMessage('Nice! That was a clean cut!');
+                if (sendMessage)
+                    sendRandomBubbleMessage([
+                        'Nice! That was a clean cut!',
+                        "Excellent! I couldn't have made a better incision!",
+                        'Perfect! That cut was incredibly precise!',
+                    ]);
+
                 addOrgan({ organ, quality });
                 break;
             case 1:
                 if (quality === OrganQuality.Bad) {
                     if (sendMessage)
-                        sendBubbleMessage(
-                            `Decent cut, but the organ was terrible to begin with. Can't use it now.`
-                        );
+                        sendRandomBubbleMessage([
+                            "Decent cut, but the organ was terrible to begin with. Can't use it now.",
+                            'The cut was alright, but the organ was already in poor condition. Not salvageable.',
+                            'Passable incision, but the organ was beyond saving from the start. No use now.',
+                        ]);
                 } else {
                     if (sendMessage)
-                        sendBubbleMessage(
-                            `Oops, made a small mistake. It's fine, I can still sell it.`
-                        );
+                        sendRandomBubbleMessage([
+                            "Oops, made a small mistake. It's fine, I can still sell it.",
+                            'A minor slip-up, but the organ is still sellable.',
+                            'A tiny error, but the organ can still be sold.',
+                        ]);
                     addOrgan({ organ, quality: quality - 1 });
                 }
                 break;
             case 2:
                 if (quality === OrganQuality.Good) {
                     if (sendMessage)
-                        sendBubbleMessage(
-                            `Ouch, that was a really bad cut. This organ won't be worth much now, but I can still sell it.`
-                        );
+                        sendRandomBubbleMessage([
+                            "Ouch, that was a really bad cut. This organ won't be worth much now, but I can still sell it.",
+                            "That was a terrible incision. The organ's value has dropped, but it can still be sold.",
+                            "A poor cut, unfortunately. The organ's worth has diminished, but I can still sell it.",
+                        ]);
                     addOrgan({ organ, quality: quality - 2 });
                 } else {
                     // eslint-disable-next-line no-lonely-if
                     if (sendMessage)
-                        sendBubbleMessage(
-                            `Ouch, that was a really bad cut. The organ's ruined now.`
-                        );
+                        sendRandomBubbleMessage([
+                            "Ouch, that was a really bad cut. The organ's ruined now.",
+                            'That was a terrible mistake. The organ is completely damaged.',
+                            'A disastrous cut. The organ is beyond repair now.',
+                        ]);
                 }
                 break;
             case 3:
                 if (sendMessage)
-                    sendBubbleMessage(
-                        `Wow, I managed to cut the organ in half! Nobody's gonna buy this.`
-                    );
+                    sendRandomBubbleMessage([
+                        "Wow, I managed to cut the organ in half! Nobody's gonna buy this.",
+                        "Unbelievable, I sliced the organ in two! It's unsellable now.",
+                        "I accidentally split the organ! There's no way anyone will purchase it.",
+                    ]);
                 break;
             default:
                 break;
@@ -305,15 +321,21 @@ const MinigameModalBase: React.FC<MinigameModalProps> = ({
 
                     processOrgan(damage);
                 } else {
-                    sendBubbleMessage(
-                        `I need to cut the whole thing out in one go. This organ's useless now, better be careful with the next one.`
-                    );
+                    sendRandomBubbleMessage([
+                        "I need to cut the whole thing out in one go. This organ's useless now, better be careful with the next one.",
+                        'I should have removed it all at once. This organ is no good, I must be more cautious next time.',
+                        "I had to extract it in a single motion. The organ is now worthless, I'll need to watch out for the following one.",
+                    ]);
                     processOrgan(3, false);
                 }
                 clearMinigameOrgan();
 
                 if (currentOrgan?.organ === Organ.Kidneys) {
-                    sendBubbleMessage(`Nice! That wasn't too bad. What's next?`);
+                    sendRandomBubbleMessage([
+                        "Nice! That wasn't too bad. What's next?",
+                        'Good job! That went well enough. On to the next one.',
+                        "Not bad at all! Let's move on to the next task.",
+                    ]);
                     setHarvestComplete(true);
                     navigateToScreen(GameScreen.Main);
                 }
@@ -337,9 +359,11 @@ const MinigameModalBase: React.FC<MinigameModalProps> = ({
                     processOrgan(3);
 
                     if (currentOrgan?.organ === Organ.Kidneys) {
-                        sendBubbleMessage(
-                            `Not the best finisher, but I got the job done. What's next?`
-                        );
+                        sendRandomBubbleMessage([
+                            "Not the best finisher, but I got the job done. What's next?",
+                            "It wasn't perfect, but the task is complete. On to the next one.",
+                            "Could have been better, but it's done. Let's proceed to the next challenge.",
+                        ]);
                         setHarvestComplete(true);
                         navigateToScreen(GameScreen.Main);
                     }
@@ -358,13 +382,20 @@ const MinigameModalBase: React.FC<MinigameModalProps> = ({
     };
 
     const handleMouseUp = () => {
-        sendBubbleMessage(
-            `I need to cut the whole thing out in one go. This organ's useless now, better be careful with the next one.`
-        );
+        sendRandomBubbleMessage([
+            "I need to cut the whole thing out in one go. This organ's useless now, better be careful with the next one.",
+            'I should have removed it all at once. This organ is no good, I must be more cautious next time.',
+            "I had to extract it in a single motion. The organ is now worthless, I'll need to watch out for the following one.",
+        ]);
+
         clearMinigameOrgan();
 
         if (currentOrgan?.organ === Organ.Kidneys) {
-            sendBubbleMessage(`Not the best finisher, but I got the job done. What's next?`);
+            sendRandomBubbleMessage([
+                "Not the best finisher, but I got the job done. What's next?",
+                "It wasn't perfect, but the task is complete. On to the next one.",
+                "Could have been better, but it's done. Let's proceed to the next challenge.",
+            ]);
             setHarvestComplete(true);
             navigateToScreen(GameScreen.Main);
         }

@@ -18,13 +18,17 @@ export const uiSlice = createSlice({
         sendBubbleMessage: (state, action: PayloadAction<string>) => {
             state.bubbleMessage = action.payload;
         },
+        sendRandomBubbleMessage: (state, action: PayloadAction<string[]>) => {
+            const randomIndex = Math.floor(Math.random() * action.payload.length);
+            state.bubbleMessage = action.payload[randomIndex];
+        },
         clearBubbleMessage: (state) => {
             state.bubbleMessage = null;
         },
     },
 });
 
-export const { sendBubbleMessage, clearBubbleMessage } = uiSlice.actions;
+export const { sendBubbleMessage, sendRandomBubbleMessage, clearBubbleMessage } = uiSlice.actions;
 
 export const getUIState = (state: State) => state.ui;
 
