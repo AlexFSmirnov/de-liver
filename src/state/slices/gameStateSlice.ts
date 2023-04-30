@@ -12,7 +12,9 @@ export enum GameScreen {
 }
 
 interface CurrentTarget {
-    todo: string;
+    quality: OrganQuality;
+    isReptiloid?: boolean;
+    isCyborg?: boolean;
 }
 
 interface MinigameOrgan {
@@ -30,10 +32,8 @@ interface GameState {
 }
 
 const initialState: GameState = {
-    activeScreen: GameScreen.Main,
-    currentTarget: {
-        todo: 'todo',
-    },
+    activeScreen: GameScreen.Hunt,
+    currentTarget: null,
     currentMinigameOrgan: null,
     harvestComplete: false,
 };
@@ -54,11 +54,19 @@ export const gameStateSlice = createSlice({
         setHarvestComplete: (state, action: PayloadAction<boolean>) => {
             state.harvestComplete = action.payload;
         },
+        setCurrentTarget: (state, action: PayloadAction<CurrentTarget | null>) => {
+            state.currentTarget = action.payload;
+        },
     },
 });
 
-export const { navigateToScreen, setMinigameOrgan, clearMinigameOrgan, setHarvestComplete } =
-    gameStateSlice.actions;
+export const {
+    navigateToScreen,
+    setMinigameOrgan,
+    clearMinigameOrgan,
+    setHarvestComplete,
+    setCurrentTarget,
+} = gameStateSlice.actions;
 
 export const getGameState = (state: State) => state.gameState;
 

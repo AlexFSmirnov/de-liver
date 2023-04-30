@@ -61,7 +61,7 @@ const MainCanvasBase: React.FC<MainCanvasProps> = ({
         if (!ctx) return;
 
         maybeDrawImage(ctx, currentTarget ? images.basePerson : images.base, 0, 0);
-        if (currentTarget && activeScreen === GameScreen.Main && !isHarvestComplete) {
+        if (currentTarget && activeScreen !== GameScreen.Operating && !isHarvestComplete) {
             maybeDrawImage(ctx, images.personSheetCover, 0, 0);
             maybeDrawImage(ctx, isHarvestHovered ? images.harvestActive : images.harvest, 0, 0);
         }
@@ -110,7 +110,7 @@ const MainCanvasBase: React.FC<MainCanvasProps> = ({
         }
 
         if (isHuntHovered) {
-            console.log('hunt');
+            navigateToScreen(GameScreen.Hunt);
         }
 
         if (isHarvestHovered) {

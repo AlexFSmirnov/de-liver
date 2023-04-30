@@ -4,6 +4,20 @@ import { createSelector } from 'reselect';
 import { Organ, OrganQuality } from '../../common';
 import type { State } from '../store';
 
+// Category 1: Items to help capture a victim (cheapest to most expensive)
+// 1. Stun Gun: Handheld device delivering electric shock.
+// 2. Pocket Net Launcher: Quickly traps victims in a net.
+// 3. Grappling Hook: Reaches and captures distant victims.
+// 4. Tranquilizer Sniper Rifle: Quietly incapacitate victims from Long-range.
+// 5. Time-Freezing Device: Freeze time for effortless capture.
+
+// Category 2: Items for a better selection of victims (cheapest to most expensive)
+// 1. Disguise Kit: Blend in for closer access to victims.
+// 2. Social Media Monitoring: Gathers online information on victims.
+// 3. Night Vision Goggles: See clearly in low light situations.
+// 4. Black Van: Expands search area for potential victims.
+// 5. Satellite Surveillance System: Advanced global victim tracking technology.
+
 export interface InventoryOrgan {
     id: string;
     organ: Organ;
