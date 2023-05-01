@@ -5,6 +5,7 @@ import { Organ, OrganQuality } from '../../common/enums';
 import type { State } from '../store';
 
 export enum GameScreen {
+    Start = 'Start',
     Main = 'Main',
     Operating = 'Operating',
     Shop = 'Shop',
@@ -44,7 +45,7 @@ interface GameState {
 }
 
 const initialState: GameState = {
-    activeScreen: GameScreen.Main,
+    activeScreen: GameScreen.Start,
     currentTarget: null,
     currentMinigameOrgan: null,
     harvestComplete: false,
@@ -82,7 +83,7 @@ export const gameStateSlice = createSlice({
             state.ending = action.payload;
         },
         resetGame: () => {
-            return { ...initialState };
+            return { ...initialState, activeScreen: GameScreen.Main };
         },
     },
 });

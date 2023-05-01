@@ -6,6 +6,7 @@ import { Ending } from './views/Ending';
 import { Hunt } from './views/Hunt';
 import { OperatingRoom } from './views/OperatingRoom';
 import { Shop } from './views/Shop';
+import { StartMenu } from './views/StartMenu';
 
 export const App: React.FC = () => {
     const containerRef = useRef<HTMLDivElement>(null);
@@ -77,6 +78,7 @@ export const App: React.FC = () => {
                     <Shop />
                     <BubbleMessage />
                     <Ending />
+                    <StartMenu />
                 </GameContainer>
             </ThemeProvider>
         </AppContainer>

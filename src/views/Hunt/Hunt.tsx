@@ -61,11 +61,13 @@ const HuntBase: React.FC<HuntProps> = ({
     const [options, setOptions] = useState<PersonOption[]>([]);
 
     useEffect(() => {
-        setOptions([
-            getRandomPersonOption(surveillanceToolsLevel, captureToolsLevel),
-            getRandomPersonOption(surveillanceToolsLevel, captureToolsLevel),
-            getRandomPersonOption(surveillanceToolsLevel, captureToolsLevel),
-        ]);
+        if (activeScreen === GameScreen.Hunt) {
+            setOptions([
+                getRandomPersonOption(surveillanceToolsLevel, captureToolsLevel),
+                getRandomPersonOption(surveillanceToolsLevel, captureToolsLevel),
+                getRandomPersonOption(surveillanceToolsLevel, captureToolsLevel),
+            ]);
+        }
     }, [activeScreen]);
 
     const handlePersonClick = (index: number) => () => {

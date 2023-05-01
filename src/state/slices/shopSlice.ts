@@ -23,13 +23,7 @@ const initialState: ShopState = {
     surgeryToolsLevel: 1,
     captureToolsLevel: 0,
     surveillanceToolsLevel: 0,
-    organs: {
-        '1': {
-            id: '1',
-            organ: Organ.Liver,
-            quality: OrganQuality.Bad,
-        },
-    },
+    organs: {},
 };
 
 export const shopSlice = createSlice({
