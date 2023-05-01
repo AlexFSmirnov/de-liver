@@ -61,6 +61,7 @@ export enum PublicImage {
     ShopBackground = 'ui/Shop-background.png',
     ShopItemBackground = 'ui/Shop-item-background.png',
     RandomSquare = 'ui/Random-square.png',
+    ShopSellBackground = 'ui/Shop-sell-background.png',
 
     // Shop
     Scissors = 'shop/Scissors.png',
@@ -83,4 +84,9 @@ export enum PublicImage {
     LiverSquare = 'cutouts/Liver-square.png',
     SmallIntestineSquare = 'cutouts/Small-int-square.png',
     StomachSquare = 'cutouts/Stomach-square.png',
+
+    // Shop buyers
+    BuyerShady = 'shop/Buyer-shady.png',
+    BuyerHospital = 'shop/Buyer-hospital.png',
+    BuyerJake = 'shop/Buyer-Jake.png',
 }

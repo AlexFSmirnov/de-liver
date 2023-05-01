@@ -34,7 +34,7 @@ interface GameState {
 }
 
 const initialState: GameState = {
-    activeScreen: GameScreen.Shop,
+    activeScreen: GameScreen.Main,
     currentTarget: null,
     currentMinigameOrgan: null,
     harvestComplete: false,

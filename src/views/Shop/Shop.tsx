@@ -7,6 +7,7 @@ import {
     getActiveScreen,
     getShopCaptureToolsLevel,
     getShopMoney,
+    getShopOrgans,
     getShopSurgeryToolsLevel,
     getShopSurveillanceToolsLevel,
     navigateToScreen,
@@ -17,7 +18,7 @@ import {
     setSurveillanceToolsLevel,
     StoreProps,
 } from '../../state';
-import { BuyCard } from './components';
+import { BuyCard, SellDialog } from './components';
 import { SellCard } from './components/SellCard/SellCard';
 import { captureItems, surgeryItems, surveillanceItems } from './content';
 import {
@@ -42,14 +43,13 @@ const connectShop = connect(
         surgeryToolsLevel: getShopSurgeryToolsLevel,
         captureToolsLevel: getShopCaptureToolsLevel,
         surveillanceToolsLevel: getShopSurveillanceToolsLevel,
+        shopOrgans: getShopOrgans,
     }),
     {
         setSurgeryToolsLevel,
         setCaptureToolsLevel,
         setSurveillanceToolsLevel,
         navigateToScreen,
-        sendRandomBubbleMessage,
-        setCurrentTarget,
     }
 );
 
@@ -64,10 +64,11 @@ const ShopBase: React.FC<ShopProps> = ({
     setSurveillanceToolsLevel,
     captureToolsLevel,
     surveillanceToolsLevel,
+    shopOrgans,
     navigateToScreen,
-    sendRandomBubbleMessage,
-    setCurrentTarget,
 }) => {
+    const [sellOrganId, setSellOrganId] = useState<string | null>(null);
+
     const handleBackClick = () => {
         navigateToScreen(GameScreen.Main);
     };
@@ -84,14 +85,9 @@ const ShopBase: React.FC<ShopProps> = ({
                     <ShopPage>
                         <ShopPageTitle>Sell</ShopPageTitle>
 
-                        <SellCard organ={Organ.Liver} quality={OrganQuality.Good} />
-                        <SellCard organ={Organ.Liver} quality={OrganQuality.Bad} />
-                        <SellCard organ={Organ.Liver} quality={OrganQuality.Medium} />
-
-                        <SellCard organ={Organ.Kidneys} quality={OrganQuality.Medium} />
-                        <SellCard organ={Organ.Stomach} quality={OrganQuality.Medium} />
-                        <SellCard organ={Organ.LargeIntestine} quality={OrganQuality.Medium} />
-                        <SellCard organ={Organ.SmallIntestine} quality={OrganQuality.Medium} />
+                        {Object.values(shopOrgans).map(({ id, ...rest }) => (
+                            <SellCard key={id} {...rest} onSell={() => setSellOrganId(id)} />
+                        ))}
                     </ShopPage>
                     <ShopPageDivider />
                     <ShopPage>
@@ -158,6 +154,7 @@ const ShopBase: React.FC<ShopProps> = ({
                     </ShopPage>
                 </ShopContentWrapper>
             </ShopWindowWrapper>
+            <SellDialog organId={sellOrganId} onClose={() => setSellOrganId(null)} />
         </ShopContainer>
     );
 };

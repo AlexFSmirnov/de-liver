@@ -1,7 +1,4 @@
-import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
 import { Organ, OrganQuality, PublicImage } from '../../../../common';
-import { getShopMoney, sendBubbleMessage, setMoney, StoreProps } from '../../../../state';
 import {
     SellCardActionsWrapper,
     SellCardContainer,
@@ -13,20 +10,9 @@ import {
     SellCardTextWrapper,
 } from './style';
 
-const connectSellCard = connect(
-    createStructuredSelector({
-        playerMoney: getShopMoney,
-    }),
-    {
-        setMoney,
-        sendBubbleMessage,
-    }
-);
-
-interface SellCardProps extends StoreProps<typeof connectSellCard> {
+interface SellCardProps {
     organ: Organ;
     quality: OrganQuality;
-    bubbleMessage?: string;
     onSell?: () => void;
 }
 
@@ -44,16 +30,12 @@ const qualityText: Record<OrganQuality, string> = {
     [OrganQuality.Good]: 'Good quality',
 };
 
-const SellCardBase: React.FC<SellCardProps> = ({
-    organ,
-    quality,
-    bubbleMessage,
-    onSell,
-    playerMoney,
-    setMoney,
-    sendBubbleMessage,
-}) => {
-    const handleSellClick = () => {};
+export const SellCard: React.FC<SellCardProps> = ({ organ, quality, onSell }) => {
+    const handleSellClick = () => {
+        if (onSell) {
+            onSell();
+        }
+    };
 
     return (
         <SellCardContainer>
@@ -73,5 +55,3 @@ const SellCardBase: React.FC<SellCardProps> = ({
         </SellCardContainer>
     );
 };
-
-export const SellCard = connectSellCard(SellCardBase);

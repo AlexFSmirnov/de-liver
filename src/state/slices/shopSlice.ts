@@ -19,7 +19,7 @@ interface ShopState {
 }
 
 const initialState: ShopState = {
-    money: 500,
+    money: 50,
     surgeryToolsLevel: 1,
     captureToolsLevel: 0,
     surveillanceToolsLevel: 5,
@@ -36,6 +36,9 @@ export const shopSlice = createSlice({
                 id,
                 ...action.payload,
             };
+        },
+        removeOrgan: (state, action: PayloadAction<string>) => {
+            delete state.organs[action.payload];
         },
         sellOrgan: (state, action: PayloadAction<{ id: string; price: number }>) => {
             delete state.organs[action.payload.id];
@@ -58,6 +61,7 @@ export const shopSlice = createSlice({
 
 export const {
     addOrgan,
+    removeOrgan,
     sellOrgan,
     setMoney,
     setSurgeryToolsLevel,
