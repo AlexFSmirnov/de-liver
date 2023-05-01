@@ -5,6 +5,7 @@ import { Organ, OrganQuality, PublicImage } from '../../../../common';
 import {
     getShopMoney,
     getShopOrgans,
+    increaseScore,
     removeOrgan,
     sendRandomBubbleMessage,
     setMoney,
@@ -34,6 +35,7 @@ const connectSellDialog = connect(
         removeOrgan,
         setMoney,
         sendRandomBubbleMessage,
+        increaseScore,
     }
 );
 
@@ -62,6 +64,7 @@ const SellDialogBase: React.FC<SellDialogProps> = ({
     playerMoney,
     removeOrgan,
     setMoney,
+    increaseScore,
     sendRandomBubbleMessage,
     onClose,
 }) => {
@@ -129,6 +132,7 @@ const SellDialogBase: React.FC<SellDialogProps> = ({
         }
 
         setMoney(playerMoney + organPrice);
+        increaseScore(organPrice);
         sendRandomBubbleMessage([
             'Jake pulled through as usual, always great to have a reliable contact for these transactions.',
             "Deal went smoothly with Jake, he's consistently dependable when it comes to organ sales.",
@@ -144,6 +148,7 @@ const SellDialogBase: React.FC<SellDialogProps> = ({
 
         removeOrgan(organId);
         setMoney(playerMoney + Math.round(organPrice * 0.6));
+        increaseScore(Math.round(organPrice * 0.6));
         sendRandomBubbleMessage([
             'Sold the organs to the hospital, feels great to contribute to a good cause and help save lives.',
             'Another successful deal with the hospital, always satisfying to know these organs are going to help others.',
@@ -176,6 +181,8 @@ const SellDialogBase: React.FC<SellDialogProps> = ({
         ]);
         removeOrgan(organId);
         setMoney(playerMoney + Math.round(organPrice * 2.5));
+        increaseScore(Math.round(organPrice * 2.5));
+
         onClose();
     };
 

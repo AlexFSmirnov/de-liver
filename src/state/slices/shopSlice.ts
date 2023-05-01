@@ -19,7 +19,7 @@ interface ShopState {
 }
 
 const initialState: ShopState = {
-    money: 50,
+    money: 5000,
     surgeryToolsLevel: 1,
     captureToolsLevel: 0,
     surveillanceToolsLevel: 5,
@@ -74,7 +74,7 @@ export const getShopState = (state: State) => state.shop;
 export const getShopMoney = createSelector(getShopState, (shop) => shop.money);
 export const getShopSurgeryToolsLevel = createSelector(
     getShopState,
-    (shop) => shop.surgeryToolsLevel
+    (shop) => shop.surgeryToolsLevel - 1
 );
 export const getShopCaptureToolsLevel = createSelector(
     getShopState,

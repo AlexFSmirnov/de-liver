@@ -105,8 +105,8 @@ const ShopBase: React.FC<ShopProps> = ({
                         {surgeryItems.map(({ id, ...rest }, i) => (
                             <BuyCard
                                 key={id}
-                                bought={i < surgeryToolsLevel}
-                                hidden={i > surgeryToolsLevel}
+                                bought={i < surgeryToolsLevel + 1}
+                                hidden={i > surgeryToolsLevel + 1}
                                 onBuy={() => setSurgeryToolsLevel(i + 1)}
                                 {...rest}
                             />
