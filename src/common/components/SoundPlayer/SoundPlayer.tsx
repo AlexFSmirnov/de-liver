@@ -3,7 +3,6 @@ import { useEffect, useRef } from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { clearQueuedSound, getBackgroundMusic, getQueuedSound, StoreProps } from '../../../state';
-import { PublicSound } from '../../enums/PublicSound';
 
 const connectSoundPlayer = connect(
     createStructuredSelector({
