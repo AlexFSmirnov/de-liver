@@ -110,7 +110,7 @@ const ShopBase: React.FC<ShopProps> = ({
                             <ShopBuyDivider />
                         </ShopBuyDividerContainer>
                         <ShopBuyDividerDescription>
-                            Boosts chances of successful victim capture
+                            Boost chances of successful victim capture
                         </ShopBuyDividerDescription>
 
                         {captureItems.map(({ id, ...rest }, i) => (

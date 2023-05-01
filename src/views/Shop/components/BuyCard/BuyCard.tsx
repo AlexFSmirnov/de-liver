@@ -2,7 +2,7 @@ import { useMemo } from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { PublicImage } from '../../../../common';
-import { getShopMoney, setMoney, StoreProps } from '../../../../state';
+import { getShopMoney, sendBubbleMessage, setMoney, StoreProps } from '../../../../state';
 import {
     BuyCardActionsWrapper,
     BuyCardContainer,
@@ -20,6 +20,7 @@ const connectBuyCard = connect(
     }),
     {
         setMoney,
+        sendBubbleMessage,
     }
 );
 
@@ -30,6 +31,7 @@ interface BuyCardProps extends StoreProps<typeof connectBuyCard> {
     price: number;
     hidden?: boolean;
     bought?: boolean;
+    bubbleMessage?: string;
     onBuy?: () => void;
 }
 
@@ -40,9 +42,11 @@ const BuyCardBase: React.FC<BuyCardProps> = ({
     price,
     hidden,
     bought,
+    bubbleMessage,
     onBuy,
     playerMoney,
     setMoney,
+    sendBubbleMessage,
 }) => {
     const disabled = useMemo(() => price > playerMoney, [price, playerMoney]);
 
@@ -50,6 +54,9 @@ const BuyCardBase: React.FC<BuyCardProps> = ({
         if (!hidden && !bought && !disabled && onBuy) {
             setMoney(playerMoney - price);
             onBuy();
+            if (bubbleMessage) {
+                sendBubbleMessage(bubbleMessage);
+            }
         }
     };
 
