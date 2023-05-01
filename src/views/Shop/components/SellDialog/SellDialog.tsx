@@ -87,12 +87,12 @@ const SellDialogBase: React.FC<SellDialogProps> = ({
     const organPrice = useMemo(() => {
         switch (quality) {
             case OrganQuality.Bad:
-                return Math.round(Math.random() * 5 + 7);
+                return Math.round(Math.random() * 7 + 12);
             case OrganQuality.Medium:
-                return Math.round(Math.random() * 10 + 15);
+                return Math.round(Math.random() * 15 + 30);
             case OrganQuality.Good:
             default:
-                return Math.round(Math.random() * 20 + 40);
+                return Math.round(Math.random() * 35 + 55);
         }
     }, [organId, quality]);
 

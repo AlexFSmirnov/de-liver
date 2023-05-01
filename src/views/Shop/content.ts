@@ -13,7 +13,7 @@ export const surgeryItems = [
         id: '2',
         name: 'Scalpel',
         image: PublicImage.Scalpel,
-        price: 250,
+        price: 175,
         bubbleMessage:
             'Nice! This sharp and precise blade will make performing surgical tasks a breeze!',
         description:
