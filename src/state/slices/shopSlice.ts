@@ -19,11 +19,17 @@ interface ShopState {
 }
 
 const initialState: ShopState = {
-    money: 5000,
+    money: 0,
     surgeryToolsLevel: 1,
     captureToolsLevel: 0,
     surveillanceToolsLevel: 0,
-    organs: {},
+    organs: {
+        '1': {
+            id: '1',
+            organ: Organ.Liver,
+            quality: OrganQuality.Bad,
+        },
+    },
 };
 
 export const shopSlice = createSlice({

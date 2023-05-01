@@ -74,7 +74,7 @@ const EndingBase: React.FC<EndingProps> = ({ ending, score, resetGame, resetShop
         return () => {
             clearTimeout(timeout);
         };
-    }, [endingStage]);
+    }, [ending, endingStage]);
 
     const handleAnyKey = useCallback(() => {
         if (endingStage < 13) {
@@ -85,8 +85,6 @@ const EndingBase: React.FC<EndingProps> = ({ ending, score, resetGame, resetShop
         resetShop();
         setEndingStage(0);
     }, [endingStage]);
-
-    console.log(endingStage);
 
     useEffect(() => {
         window.addEventListener('keydown', handleAnyKey);

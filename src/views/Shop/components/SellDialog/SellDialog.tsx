@@ -3,11 +3,13 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { Organ, OrganQuality, PublicImage } from '../../../../common';
 import {
+    Ending,
     getShopMoney,
     getShopOrgans,
     increaseScore,
     removeOrgan,
     sendRandomBubbleMessage,
+    setEnding,
     setMoney,
     StoreProps,
 } from '../../../../state';
@@ -36,6 +38,7 @@ const connectSellDialog = connect(
         setMoney,
         sendRandomBubbleMessage,
         increaseScore,
+        setEnding,
     }
 );
 
@@ -66,6 +69,7 @@ const SellDialogBase: React.FC<SellDialogProps> = ({
     setMoney,
     increaseScore,
     sendRandomBubbleMessage,
+    setEnding,
     onClose,
 }) => {
     const [shadyBuyer, setShadyBuyer] = useState<ShadyBuyer | null>(null);
@@ -97,12 +101,12 @@ const SellDialogBase: React.FC<SellDialogProps> = ({
             return;
         }
 
-        // if (Math.random() < 0.9) {
-        //     setShadyBuyer(null);
-        //     return;
-        // }
+        if (Math.random() < 0.9) {
+            setShadyBuyer(null);
+            return;
+        }
 
-        if (Math.random() < 0.1) {
+        if (Math.random() < 0.5) {
             setShadyBuyer(ShadyBuyer.UndercoverCop);
             return;
         }
@@ -163,12 +167,14 @@ const SellDialogBase: React.FC<SellDialogProps> = ({
         if (!organId) return;
 
         if (shadyBuyer === ShadyBuyer.UndercoverCop) {
-            console.log('Game over!');
+            onClose();
+            setEnding(Ending.UndercoverCop);
             return;
         }
 
         if (shadyBuyer === ShadyBuyer.CrimeBoss && quality !== OrganQuality.Good) {
-            console.log('Crime boss is not happy with the organ!');
+            onClose();
+            setEnding(Ending.CrimeBoss);
             return;
         }
 

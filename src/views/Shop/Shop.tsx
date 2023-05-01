@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { Organ, OrganQuality, PublicImage } from '../../common';
+import { PublicImage } from '../../common';
 import {
     GameScreen,
     getActiveScreen,
@@ -11,9 +11,7 @@ import {
     getShopSurgeryToolsLevel,
     getShopSurveillanceToolsLevel,
     navigateToScreen,
-    sendRandomBubbleMessage,
     setCaptureToolsLevel,
-    setCurrentTarget,
     setSurgeryToolsLevel,
     setSurveillanceToolsLevel,
     StoreProps,

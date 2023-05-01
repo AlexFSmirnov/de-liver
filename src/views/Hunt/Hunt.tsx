@@ -3,6 +3,7 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { PublicImage } from '../../common';
 import {
+    Ending,
     GameScreen,
     getActiveScreen,
     getShopCaptureToolsLevel,
@@ -11,6 +12,7 @@ import {
     navigateToScreen,
     sendRandomBubbleMessage,
     setCurrentTarget,
+    setEnding,
     setMoney,
     StoreProps,
 } from '../../state';
@@ -38,6 +40,7 @@ const connectHunt = connect(
         sendRandomBubbleMessage,
         setCurrentTarget,
         setMoney,
+        setEnding,
     }
 );
 
@@ -52,6 +55,7 @@ const HuntBase: React.FC<HuntProps> = ({
     sendRandomBubbleMessage,
     setCurrentTarget,
     setMoney,
+    setEnding,
 }) => {
     const [options, setOptions] = useState<PersonOption[]>([]);
 
@@ -61,7 +65,7 @@ const HuntBase: React.FC<HuntProps> = ({
             getRandomPersonOption(surveillanceToolsLevel, captureToolsLevel),
             getRandomPersonOption(surveillanceToolsLevel, captureToolsLevel),
         ]);
-    }, []);
+    }, [activeScreen]);
 
     const handlePersonClick = (index: number) => () => {
         const { captureProbability, organQuality, type } = options[index];
@@ -88,8 +92,8 @@ const HuntBase: React.FC<HuntProps> = ({
             }
 
             if (playerMoney < fine) {
-                // TODO: Game over if money ran out
-                console.log('Lost!');
+                setEnding(Ending.NoMoney);
+                return;
             }
 
             setMoney(playerMoney - fine);
