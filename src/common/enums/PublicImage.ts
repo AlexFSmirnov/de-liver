@@ -63,6 +63,9 @@ export enum PublicImage {
     RandomSquare = 'ui/Random-square.png',
 
     // Shop
+    Scissors = 'shop/Scissors.png',
+    Scalpel = 'shop/Scalpel.png',
+    Chainsaw = 'shop/Chainsaw.png',
     Taser = 'shop/Taser.png',
     NetLauncher = 'shop/Net-launcher.png',
     GrapplingHook = 'shop/Grappling-hook.png',

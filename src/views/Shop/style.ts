@@ -83,3 +83,24 @@ export const ShopPageTitle = styled.div`
     font-size: 2.5vw;
     margin: 2% 0;
 `;
+
+export const ShopBuyDividerContainer = styled.div`
+    width: 80%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 0.5%;
+`;
+
+export const ShopBuyDivider = styled.div`
+    flex: 1;
+    margin: 0 2%;
+    border-bottom: 1px solid grey;
+`;
+
+export const ShopBuyDividerDescription = styled.div`
+    font-size: 0.9vw;
+    text-align: center;
+    color: #555;
+    margin-bottom: 2%;
+`;

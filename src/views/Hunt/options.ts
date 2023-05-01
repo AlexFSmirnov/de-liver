@@ -59,45 +59,45 @@ const getOrganQualityByPersonOption = (
     return OrganQuality.Good;
 };
 
-const getAgeCaptureProbability = (age: number, captureToolLevel: number) => {
+const getAgeCaptureProbability = (age: number, captureToolsLevel: number) => {
     const ageProbability = 0.5 + ((age - 18) / (90 - 18)) * 0.5;
-    const captureProbability = ageProbability + 0.1 * captureToolLevel;
+    const captureProbability = ageProbability + 0.1 * captureToolsLevel;
     return Math.min(1, captureProbability);
 };
 
-const getWeightCaptureProbability = (weight: PersonWeight, captureToolLevel: number) => {
+const getWeightCaptureProbability = (weight: PersonWeight, captureToolsLevel: number) => {
     const weightProbability = weight === PersonWeight.Normal ? 0.5 : 0.75;
-    const captureProbability = weightProbability + 0.1 * captureToolLevel;
+    const captureProbability = weightProbability + 0.1 * captureToolsLevel;
     return Math.min(1, captureProbability);
 };
 
-const getPersonTypeCaptureProbability = (personType: PersonType, captureToolLevel: number) => {
+const getPersonTypeCaptureProbability = (personType: PersonType, captureToolsLevel: number) => {
     const typeProbability = personType === PersonType.Normal ? 0.6 : 0.3;
-    const captureProbability = typeProbability + 0.1 * captureToolLevel;
+    const captureProbability = typeProbability + 0.1 * captureToolsLevel;
     return Math.min(1, captureProbability);
 };
 
 const getPersonOptionCaptureProbability = (
     personOption: Omit<PersonOption, 'captureProbability' | 'organQuality'>,
-    captureToolLevel: number
+    captureToolsLevel: number
 ) => {
     if (personOption.type === PersonType.Cyborg || personOption.type === PersonType.Reptiloid) {
         return 1;
     }
 
-    const ageProbability = getAgeCaptureProbability(personOption.age, captureToolLevel);
-    const weightProbability = getWeightCaptureProbability(personOption.weight, captureToolLevel);
-    const typeProbability = getPersonTypeCaptureProbability(personOption.type, captureToolLevel);
+    const ageProbability = getAgeCaptureProbability(personOption.age, captureToolsLevel);
+    const weightProbability = getWeightCaptureProbability(personOption.weight, captureToolsLevel);
+    const typeProbability = getPersonTypeCaptureProbability(personOption.type, captureToolsLevel);
 
     return (ageProbability + weightProbability + typeProbability) / 3;
 };
 
-const getRandomAge = (surveillanceToolLevel: number) => {
+const getRandomAge = (surveillanceToolsLevel: number) => {
     const minAge = 18;
     const maxAge = 90;
 
-    // Adjust the age distribution based on the surveillanceToolLevel
-    const ageDistributionFactor = 1 - (0.25 * surveillanceToolLevel) / 5;
+    // Adjust the age distribution based on the surveillanceToolsLevel
+    const ageDistributionFactor = 1 - (0.25 * surveillanceToolsLevel) / 5;
 
     // Generate a random number between 0 and 1
     const randomNumber = Math.random();
@@ -111,8 +111,8 @@ const getRandomAge = (surveillanceToolLevel: number) => {
     return age;
 };
 
-const getRandomWeight = (surveillanceToolLevel: number) => {
-    const normalProbability = 0.15 * surveillanceToolLevel;
+const getRandomWeight = (surveillanceToolsLevel: number) => {
+    const normalProbability = 0.15 * surveillanceToolsLevel;
 
     if (Math.random() < normalProbability) {
         return PersonWeight.Normal;
@@ -125,14 +125,14 @@ const getRandomWeight = (surveillanceToolLevel: number) => {
     return PersonWeight.Overweight;
 };
 
-const getRandomPersonType = (surveillanceToolLevel: number) => {
-    const sportsProbability = 0.12 * surveillanceToolLevel;
+const getRandomPersonType = (surveillanceToolsLevel: number) => {
+    const sportsProbability = 0.12 * surveillanceToolsLevel;
 
     if (Math.random() < sportsProbability) {
         return PersonType.Sports;
     }
 
-    const richProbability = 0.15 * surveillanceToolLevel;
+    const richProbability = 0.15 * surveillanceToolsLevel;
 
     if (Math.random() < richProbability) {
         return PersonType.Rich;
@@ -142,13 +142,13 @@ const getRandomPersonType = (surveillanceToolLevel: number) => {
 };
 
 export const getRandomPersonOption = (
-    surveillanceToolLevel: number,
-    captureToolLevel: number
+    surveillanceToolsLevel: number,
+    captureToolsLevel: number
 ): PersonOption => {
-    const age = getRandomAge(surveillanceToolLevel);
-    const weight = getRandomWeight(surveillanceToolLevel);
+    const age = getRandomAge(surveillanceToolsLevel);
+    const weight = getRandomWeight(surveillanceToolsLevel);
 
-    const personType = getRandomPersonType(surveillanceToolLevel);
+    const personType = getRandomPersonType(surveillanceToolsLevel);
 
     let clothes = '';
     let items = '';
@@ -241,7 +241,7 @@ export const getRandomPersonOption = (
         type: finalPersonType,
     };
 
-    const captureProbability = getPersonOptionCaptureProbability(option, captureToolLevel);
+    const captureProbability = getPersonOptionCaptureProbability(option, captureToolsLevel);
     const organQuality = getOrganQualityByPersonOption(option);
 
     return {

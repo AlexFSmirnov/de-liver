@@ -5,6 +5,8 @@ import { PublicImage } from '../../common';
 import {
     GameScreen,
     getActiveScreen,
+    getShopCaptureToolsLevel,
+    getShopSurveillanceToolsLevel,
     navigateToScreen,
     sendRandomBubbleMessage,
     setCurrentTarget,
@@ -25,6 +27,8 @@ import {
 const connectHunt = connect(
     createStructuredSelector({
         activeScreen: getActiveScreen,
+        captureToolsLevel: getShopCaptureToolsLevel,
+        surveillanceToolsLevel: getShopSurveillanceToolsLevel,
     }),
     {
         navigateToScreen,
@@ -35,11 +39,10 @@ const connectHunt = connect(
 
 type HuntProps = StoreProps<typeof connectHunt>;
 
-const captureToolLevel = 0;
-const surveillanceToolLevel = 5;
-
 const HuntBase: React.FC<HuntProps> = ({
     activeScreen,
+    captureToolsLevel,
+    surveillanceToolsLevel,
     navigateToScreen,
     sendRandomBubbleMessage,
     setCurrentTarget,
@@ -48,9 +51,9 @@ const HuntBase: React.FC<HuntProps> = ({
 
     useEffect(() => {
         setOptions([
-            getRandomPersonOption(surveillanceToolLevel, captureToolLevel),
-            getRandomPersonOption(surveillanceToolLevel, captureToolLevel),
-            getRandomPersonOption(surveillanceToolLevel, captureToolLevel),
+            getRandomPersonOption(surveillanceToolsLevel, captureToolsLevel),
+            getRandomPersonOption(surveillanceToolsLevel, captureToolsLevel),
+            getRandomPersonOption(surveillanceToolsLevel, captureToolsLevel),
         ]);
     }, []);
 

@@ -9,7 +9,7 @@ import {
     getActiveScreen,
     getCurrentMinigameOrgan,
     getCurrentTarget,
-    getShopToolLevel,
+    getShopSurgeryToolsLevel,
     navigateToScreen,
     sendRandomBubbleMessage,
     setHarvestComplete,
@@ -22,7 +22,7 @@ const connectMinigameModal = connect(
         activeScreen: getActiveScreen,
         currentTarget: getCurrentTarget,
         currentOrgan: getCurrentMinigameOrgan,
-        toolsLevel: getShopToolLevel,
+        surgeryToolsLevel: getShopSurgeryToolsLevel,
     }),
     {
         addOrgan,
@@ -57,7 +57,7 @@ const MinigameModalBase: React.FC<MinigameModalProps> = ({
     activeScreen,
     currentTarget,
     currentOrgan,
-    toolsLevel,
+    surgeryToolsLevel,
     addOrgan,
     clearMinigameOrgan,
     navigateToScreen,
@@ -116,16 +116,18 @@ const MinigameModalBase: React.FC<MinigameModalProps> = ({
         let image;
         switch (currentOrgan?.organ) {
             case Organ.Liver:
-                image = [images.liverTools1, images.liverTools2, images.liverTools3][toolsLevel];
+                image = [images.liverTools1, images.liverTools2, images.liverTools3][
+                    surgeryToolsLevel
+                ];
                 break;
             case Organ.Kidneys:
                 image = [images.kidneysTools1, images.kidneysTools2, images.kidneysTools3][
-                    toolsLevel
+                    surgeryToolsLevel
                 ];
                 break;
             case Organ.Stomach:
                 image = [images.stomachTools1, images.stomachTools2, images.stomachTools3][
-                    toolsLevel
+                    surgeryToolsLevel
                 ];
                 break;
             case Organ.SmallIntestine:
@@ -133,14 +135,14 @@ const MinigameModalBase: React.FC<MinigameModalProps> = ({
                     images.smallIntestineTools1,
                     images.smallIntestineTools2,
                     images.smallIntestineTools3,
-                ][toolsLevel];
+                ][surgeryToolsLevel];
                 break;
             case Organ.LargeIntestine:
                 image = [
                     images.largeIntestineTools1,
                     images.largeIntestineTools2,
                     images.largeIntestineTools3,
-                ][toolsLevel];
+                ][surgeryToolsLevel];
                 break;
             default:
                 return;

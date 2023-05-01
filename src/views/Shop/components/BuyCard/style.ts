@@ -58,7 +58,7 @@ export const BuyCardName = styled.div`
 `;
 
 export const BuyCardDescription = styled.div`
-    font-size: 0.7vw;
+    font-size: 0.8vw;
     margin-top: 0.5vw;
 `;
 
