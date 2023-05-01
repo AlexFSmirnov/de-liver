@@ -9,10 +9,13 @@ import {
     usePublicImages,
 } from '../../../../common';
 import {
+    Ending,
     GameScreen,
     getActiveScreen,
     getCurrentTarget,
     getIsHarvestComplete,
+    sendBubbleMessage,
+    setEnding,
     setMinigameOrgan,
 } from '../../../../state';
 import { StoreProps } from '../../../../state/store';
@@ -34,6 +37,8 @@ const connectHarvestCanvas = connect(
     }),
     {
         setMinigameOrgan,
+        sendBubbleMessage,
+        setEnding,
     }
 );
 
@@ -54,6 +59,8 @@ const harvestCanvasImages = {
     operateSkinCover: PublicImage.OperateSkinCover,
     operateSpine: PublicImage.OperateSpine,
     operateTopCover: PublicImage.OperateTopCover,
+    operateCyborg: PublicImage.OperateCyborg,
+    operateReptiloid: PublicImage.OperateReptiloid,
 };
 
 enum HarvestStage {
@@ -71,6 +78,8 @@ const HarvestCanvasBase: React.FC<HarvestCanvasProps> = ({
     currentTarget,
     isHarvestComplete,
     setMinigameOrgan,
+    sendBubbleMessage,
+    setEnding,
 }) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -92,6 +101,31 @@ const HarvestCanvasBase: React.FC<HarvestCanvasProps> = ({
 
         maybeDrawImage(ctx, images.operateBackground);
         maybeDrawImage(ctx, images.operateSpine);
+
+        if (
+            currentHarvestStage === HarvestStage.Liver &&
+            (currentTarget?.isReptiloid || currentTarget?.isCyborg)
+        ) {
+            if (currentTarget?.isCyborg) {
+                maybeDrawImage(ctx, images.operateCyborg);
+                maybeDrawImage(ctx, images.operateTopCover);
+                sendBubbleMessage('Uhhh... What?');
+                setTimeout(() => {
+                    setEnding(Ending.Cyborg);
+                }, 2000);
+                return;
+            }
+
+            if (currentTarget?.isReptiloid) {
+                maybeDrawImage(ctx, images.operateReptiloid);
+                maybeDrawImage(ctx, images.operateTopCover);
+                sendBubbleMessage('Uhhh... What?');
+                setTimeout(() => {
+                    setEnding(Ending.Reptiloid);
+                }, 2000);
+                return;
+            }
+        }
 
         if (currentHarvestStage <= HarvestStage.Kidneys)
             maybeDrawImage(
@@ -121,13 +155,14 @@ const HarvestCanvasBase: React.FC<HarvestCanvasProps> = ({
                     ? images.operateStomachActive
                     : images.operateStomach
             );
-        if (currentHarvestStage <= HarvestStage.Liver)
+        if (currentHarvestStage <= HarvestStage.Liver) {
             maybeDrawImage(
                 ctx,
                 isMouseOverCurrentOrgan && currentHarvestStage === HarvestStage.Liver
                     ? images.operateLiverActive
                     : images.operateLiver
             );
+        }
         if (currentHarvestStage <= HarvestStage.Skin) maybeDrawImage(ctx, images.operateSkinCover);
 
         maybeDrawImage(ctx, images.operateTopCover);

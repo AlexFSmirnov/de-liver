@@ -23,8 +23,8 @@ export const ScoreCardContainer = styled.div`
     position: absolute;
     top: 2%;
     right: 1%;
-    width: 25%;
-    height: 7.5%;
+    width: 20%;
+    height: 6.2%;
     pointer-events: none;
     user-select: none;
 `;

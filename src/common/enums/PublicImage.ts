@@ -27,6 +27,8 @@ export enum PublicImage {
     OperateSkinCover = 'operating-room/Operate-skin-cover.png',
     OperateSpine = 'operating-room/Operate-spine.png',
     OperateTopCover = 'operating-room/Operate-top-cover.png',
+    OperateCyborg = 'operating-room/Operate-cyborg.png',
+    OperateReptiloid = 'operating-room/Operate-reptiloid.png',
 
     // Organ cutouts
     KidneysCutout = 'organs/Kidneys-cutout.png',
