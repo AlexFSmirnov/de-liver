@@ -76,4 +76,11 @@ export enum PublicImage {
     NightVision = 'shop/Night-vision.png',
     BlackVan = 'shop/Black-van.png',
     SatelliteSurveillance = 'shop/Satellite-surveillance.png',
+
+    // Cutouts with no tools
+    KidneysSquare = 'cutouts/Kidneys-square.png',
+    LargeIntestineSquare = 'cutouts/Large-int-square.png',
+    LiverSquare = 'cutouts/Liver-square.png',
+    SmallIntestineSquare = 'cutouts/Small-int-square.png',
+    StomachSquare = 'cutouts/Stomach-square.png',
 }

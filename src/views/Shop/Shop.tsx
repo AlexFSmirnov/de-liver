@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
-import { PublicImage } from '../../common';
+import { Organ, OrganQuality, PublicImage } from '../../common';
 import {
     GameScreen,
     getActiveScreen,
@@ -18,6 +18,7 @@ import {
     StoreProps,
 } from '../../state';
 import { BuyCard } from './components';
+import { SellCard } from './components/SellCard/SellCard';
 import { captureItems, surgeryItems, surveillanceItems } from './content';
 import {
     ShopBackgroundImage,
@@ -67,17 +68,30 @@ const ShopBase: React.FC<ShopProps> = ({
     sendRandomBubbleMessage,
     setCurrentTarget,
 }) => {
+    const handleBackClick = () => {
+        navigateToScreen(GameScreen.Main);
+    };
+
     return (
         <ShopContainer visible={activeScreen === GameScreen.Shop}>
             <ShopBackgroundImage src={`images/${PublicImage.ShopBackground}`} />
             <ShopWindowWrapper>
                 <ShopHeader>
-                    <ShopHeaderButton>{'< '}Back</ShopHeaderButton>
+                    <ShopHeaderButton onClick={handleBackClick}>{'< '}Back</ShopHeaderButton>
                     <span>${availableMoney}</span>
                 </ShopHeader>
                 <ShopContentWrapper>
                     <ShopPage>
                         <ShopPageTitle>Sell</ShopPageTitle>
+
+                        <SellCard organ={Organ.Liver} quality={OrganQuality.Good} />
+                        <SellCard organ={Organ.Liver} quality={OrganQuality.Bad} />
+                        <SellCard organ={Organ.Liver} quality={OrganQuality.Medium} />
+
+                        <SellCard organ={Organ.Kidneys} quality={OrganQuality.Medium} />
+                        <SellCard organ={Organ.Stomach} quality={OrganQuality.Medium} />
+                        <SellCard organ={Organ.LargeIntestine} quality={OrganQuality.Medium} />
+                        <SellCard organ={Organ.SmallIntestine} quality={OrganQuality.Medium} />
                     </ShopPage>
                     <ShopPageDivider />
                     <ShopPage>

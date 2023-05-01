@@ -78,7 +78,7 @@ const BuyCardBase: React.FC<BuyCardProps> = ({
                         </BuyCardTextWrapper>
                         {bought ? (
                             <BuyCardActionsWrapper disabled style={{ cursor: 'default' }}>
-                                <span style={{ color: '#090' }}>Owned</span>
+                                <span style={{ color: '#030' }}>Owned</span>
                             </BuyCardActionsWrapper>
                         ) : (
                             <BuyCardActionsWrapper disabled={disabled} onClick={handleBuyClick}>
