@@ -34,8 +34,10 @@ export const BuyCardPreviewImage = styled.img<{ unavailable?: boolean }>`
     height: 90%;
     max-height: 90%;
 
-    ${({ unavailable }) =>
-        unavailable ? `filter: brightness(0) saturate(0) invert(0) blur(0.4vw);` : ''}
+    ${({ unavailable, theme }) =>
+        unavailable
+            ? `filter: brightness(0) saturate(0) invert(0) blur(${theme.gameScaled(0.4)});`
+            : ''}
 
     image-rendering: pixelated;
 `;

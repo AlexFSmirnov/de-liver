@@ -90,6 +90,7 @@ export const ShopBuyDividerContainer = styled.div`
     flex-direction: row;
     align-items: center;
     margin-bottom: 0.5%;
+    font-size: ${({ theme }) => theme.gameScaled(1.5)};
 `;
 
 export const ShopBuyDivider = styled.div`
