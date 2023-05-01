@@ -46,6 +46,10 @@ export const gameStateSlice = createSlice({
     initialState,
     reducers: {
         navigateToScreen: (state, action: PayloadAction<GameScreen>) => {
+            if (state.activeScreen === GameScreen.Hunt && action.payload === GameScreen.Main) {
+                state.harvestComplete = false;
+            }
+
             state.activeScreen = action.payload;
         },
         setMinigameOrgan: (state, action: PayloadAction<MinigameOrgan>) => {

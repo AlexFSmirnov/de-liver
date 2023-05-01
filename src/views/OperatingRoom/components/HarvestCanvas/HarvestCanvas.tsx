@@ -79,6 +79,10 @@ const HarvestCanvasBase: React.FC<HarvestCanvasProps> = ({
 
     const images = usePublicImages(harvestCanvasImages);
 
+    useEffect(() => {
+        setCurrentHarvestStage(HarvestStage.Skin);
+    }, [currentTarget]);
+
     const draw = useCallback(() => {
         const { current: canvas } = canvasRef;
         if (!canvas) return;

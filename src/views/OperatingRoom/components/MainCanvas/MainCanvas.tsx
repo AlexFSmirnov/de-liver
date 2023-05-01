@@ -95,7 +95,11 @@ const MainCanvasBase: React.FC<MainCanvasProps> = ({
         setIsShopHovered(isPointInRect({ x, y }, SHOP_BUTTON_RECT));
         setIsHuntHovered(isPointInRect({ x, y }, HUNT_BUTTON_RECT));
 
-        setIsHarvestHovered(currentTarget !== null && isPointInRect({ x, y }, OPERATE_BUTTON_RECT));
+        setIsHarvestHovered(
+            currentTarget !== null &&
+                !isHarvestComplete &&
+                isPointInRect({ x, y }, OPERATE_BUTTON_RECT)
+        );
     };
 
     const handleMouseClick = () => {
