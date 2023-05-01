@@ -22,7 +22,7 @@ const initialState: ShopState = {
     money: 500,
     surgeryToolsLevel: 1,
     captureToolsLevel: 0,
-    surveillanceToolsLevel: 0,
+    surveillanceToolsLevel: 5,
     organs: {},
 };
 

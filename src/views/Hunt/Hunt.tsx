@@ -6,10 +6,12 @@ import {
     GameScreen,
     getActiveScreen,
     getShopCaptureToolsLevel,
+    getShopMoney,
     getShopSurveillanceToolsLevel,
     navigateToScreen,
     sendRandomBubbleMessage,
     setCurrentTarget,
+    setMoney,
     StoreProps,
 } from '../../state';
 import { getRandomPersonOption, getRangeFromAge, PersonOption, PersonType } from './options';
@@ -29,11 +31,13 @@ const connectHunt = connect(
         activeScreen: getActiveScreen,
         captureToolsLevel: getShopCaptureToolsLevel,
         surveillanceToolsLevel: getShopSurveillanceToolsLevel,
+        playerMoney: getShopMoney,
     }),
     {
         navigateToScreen,
         sendRandomBubbleMessage,
         setCurrentTarget,
+        setMoney,
     }
 );
 
@@ -43,9 +47,11 @@ const HuntBase: React.FC<HuntProps> = ({
     activeScreen,
     captureToolsLevel,
     surveillanceToolsLevel,
+    playerMoney,
     navigateToScreen,
     sendRandomBubbleMessage,
     setCurrentTarget,
+    setMoney,
 }) => {
     const [options, setOptions] = useState<PersonOption[]>([]);
 
@@ -60,7 +66,7 @@ const HuntBase: React.FC<HuntProps> = ({
     const handlePersonClick = (index: number) => () => {
         const { captureProbability, organQuality, type } = options[index];
 
-        if (Math.random() < captureProbability) {
+        if (Math.random() <= captureProbability) {
             sendRandomBubbleMessage([
                 'Another successful hunt, just as planned!',
                 'Capture complete, my skills never disappoint!',
@@ -74,13 +80,45 @@ const HuntBase: React.FC<HuntProps> = ({
                 isCyborg: type === PersonType.Cyborg,
             });
         } else {
-            sendRandomBubbleMessage([
-                "Slipped away, but I won't give up!",
-                "A rare miss, but I'll learn from this.",
-                "Escaped today, but they won't be so lucky next time.",
-                "A setback, but I'll bounce back stronger.",
-                'Temporary defeat, but the hunt continues!',
-            ]);
+            let fine = 20;
+            if (type === PersonType.Sports) {
+                fine = 50;
+            } else if (type === PersonType.Rich) {
+                fine = 100;
+            }
+
+            if (playerMoney < fine) {
+                // TODO: Game over if money ran out
+                console.log('Lost!');
+            }
+
+            setMoney(playerMoney - fine);
+
+            if (type === PersonType.Sports) {
+                sendRandomBubbleMessage([
+                    "Darn, that sporty victim got away and now I'm out $50 because of the fine. I'll improve my tactics!",
+                    "Their athleticism threw me off, lost the capture and $50 to fines. Next time, I'll be ready!",
+                    "Missed the sporty target and now I'm down $50 from the fine. Time to up my game!",
+                    'That agile one escaped and cost me $50 in fines. I need to adapt and overcome.',
+                    "Capture failed due to their sportiness, and it cost me $50. I won't underestimate them again!",
+                ]);
+            } else if (type === PersonType.Rich) {
+                sendRandomBubbleMessage([
+                    "Wow, the rich target escaped, sued me, and now I'm out $100. I need a better approach!",
+                    "Slick one got away, sued me for $100. I'll be more cautious with wealthy targets next time.",
+                    "Lost the rich victim and now I'm down $100 from the lawsuit. Time to reevaluate my strategy!",
+                    'That affluent target slipped away and cost me $100 in legal fees. I must refine my tactics.',
+                    "Failed to capture the wealthy one and got sued for $100. I won't let them outsmart me again!",
+                ]);
+            } else {
+                sendRandomBubbleMessage([
+                    "Ugh, capture failed and now I'm out $20 because of that fine. I'll do better next time!",
+                    "So close, but no luck. Lost $20 to fines too, that stings! I'll be more prepared next attempt.",
+                    "Missed the mark and now I'm down $20 from the fine. Time to step up my game!",
+                    'That one got away and cost me $20. I need to rethink my strategy and bounce back.',
+                    "Capture attempt failed, and it cost me $20 in fines. I won't let it happen again!",
+                ]);
+            }
             setCurrentTarget(null);
         }
 
