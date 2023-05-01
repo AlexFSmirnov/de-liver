@@ -1,4 +1,5 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { ThemeProvider } from 'styled-components';
 import { ASPECT_RATIO, BubbleMessage } from './common';
 import { AppContainer, GameContainer, GameContainerProps } from './style';
 import { Ending } from './views/Ending';
@@ -54,17 +55,30 @@ export const App: React.FC = () => {
         };
     }, []);
 
+    const theme = useMemo(
+        () => ({
+            container: {
+                width: gameContainerPosition.width,
+                height: gameContainerPosition.height,
+            },
+            gameScaled: (scalar: number) => `${(scalar * gameContainerPosition.width) / 100}px`,
+        }),
+        [gameContainerPosition]
+    );
+
     return (
         <AppContainer ref={containerRef}>
-            {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
-            {/* @ts-ignore */}
-            <GameContainer {...gameContainerPosition}>
-                <OperatingRoom containerSize={gameContainerPosition} />
-                <Hunt />
-                <Shop />
-                <BubbleMessage />
-                <Ending />
-            </GameContainer>
+            <ThemeProvider theme={theme}>
+                {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+                {/* @ts-ignore */}
+                <GameContainer {...gameContainerPosition}>
+                    <OperatingRoom containerSize={gameContainerPosition} />
+                    <Hunt />
+                    <Shop />
+                    <BubbleMessage />
+                    <Ending />
+                </GameContainer>
+            </ThemeProvider>
         </AppContainer>
     );
 };

@@ -31,6 +31,6 @@ export const BubbleMessageTextContainer = styled.div`
     right: 6%;
     bottom: 27%;
 
-    font-size: 1.7vw;
+    font-size: ${({ theme }) => theme.gameScaled(1.7)};
     font-family: 'Joystix Monospace';
 `;

@@ -34,7 +34,7 @@ export const HuntTitle = styled.div`
     height: 10%;
 
     text-align: center;
-    font-size: 5vw;
+    font-size: ${({ theme }) => theme.gameScaled(5)};
     font-family: 'Joystix Monospace';
     color: white;
 `;
@@ -74,18 +74,22 @@ export const HuntPersonStatContainer = styled.div`
     display: flex;
     flex-direction: row;
     justify-content: space-between;
-    font-size: 1.7vw;
+    font-size: ${({ theme }) => theme.gameScaled(1.7)};
     margin-bottom: 6%;
 `;
 
 export const HuntPersonLongStatContainer = styled.div`
     display: flex;
     flex-direction: column;
-    font-size: 1.2vw;
+    font-size: ${({ theme }) => theme.gameScaled(1.2)};
     margin-bottom: 2%;
     color: #800;
 
     & > *:nth-child(2) {
         color: #444;
     }
+`;
+
+export const CaptureChance = styled.div`
+    font-size: ${({ theme }) => theme.gameScaled(1.1)};
 `;

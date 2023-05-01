@@ -38,12 +38,12 @@ export const SellDialogContentWrapper = styled.div`
 `;
 
 export const SellDialogTitle = styled.div`
-    font-size: 3vw;
+    font-size: ${({ theme }) => theme.gameScaled(3)};
     margin-top: 1%;
 `;
 
 export const SellDialogSubtitle = styled.div`
-    font-size: 1vw;
+    font-size: ${({ theme }) => theme.gameScaled(1)};
     margin-bottom: 1%;
 `;
 
@@ -98,12 +98,12 @@ export const BuyerProfilePic = styled.img`
 `;
 
 export const BuyerDescription = styled.div`
-    font-size: 0.8vw;
+    font-size: ${({ theme }) => theme.gameScaled(0.8)};
     text-align: center;
 `;
 
 export const BuyerOffer = styled.div`
     text-align: center;
-    font-size: 1vw;
+    font-size: ${({ theme }) => theme.gameScaled(1)};
     color: #030;
 `;

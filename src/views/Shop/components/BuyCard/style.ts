@@ -4,8 +4,8 @@ export const BuyCardContainer = styled.div`
     position: relative;
 
     width: 80%;
-    min-height: 7.05vw;
-    margin-bottom: 1vw;
+    min-height: ${({ theme }) => theme.gameScaled(7.05)};
+    margin-bottom: ${({ theme }) => theme.gameScaled(1)};
 `;
 
 export const BuyCardImage = styled.img`
@@ -50,12 +50,12 @@ export const BuyCardTextWrapper = styled.div`
 `;
 
 export const BuyCardName = styled.div`
-    font-size: 1.1vw;
+    font-size: ${({ theme }) => theme.gameScaled(1.1)};
 `;
 
 export const BuyCardDescription = styled.div`
-    font-size: 0.8vw;
-    margin-top: 0.5vw;
+    font-size: ${({ theme }) => theme.gameScaled(0.8)};
+    margin-top: ${({ theme }) => theme.gameScaled(0.5)};
 `;
 
 export const BuyCardActionsWrapper = styled.div<{ disabled?: boolean }>`
@@ -64,7 +64,7 @@ export const BuyCardActionsWrapper = styled.div<{ disabled?: boolean }>`
     padding: 0 2%;
     box-sizing: border-box;
 
-    font-size: 1.2vw;
+    font-size: ${({ theme }) => theme.gameScaled(1.2)};
 
     display: flex;
     flex-direction: column;

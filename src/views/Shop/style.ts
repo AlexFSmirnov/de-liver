@@ -37,7 +37,7 @@ export const ShopHeader = styled.div`
     height: 8%;
 
     background-color: grey;
-    font-size: 2.5vw;
+    font-size: ${({ theme }) => theme.gameScaled(2.5)};
 
     padding: 0% 1%;
     box-sizing: border-box;
@@ -80,7 +80,7 @@ export const ShopPageDivider = styled.div`
 `;
 
 export const ShopPageTitle = styled.div`
-    font-size: 2.5vw;
+    font-size: ${({ theme }) => theme.gameScaled(2.5)};
     margin: 2% 0;
 `;
 
@@ -99,7 +99,7 @@ export const ShopBuyDivider = styled.div`
 `;
 
 export const ShopBuyDividerDescription = styled.div`
-    font-size: 0.9vw;
+    font-size: ${({ theme }) => theme.gameScaled(0.9)};
     text-align: center;
     color: #555;
     margin-bottom: 2%;

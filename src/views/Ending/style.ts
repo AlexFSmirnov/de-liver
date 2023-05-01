@@ -32,7 +32,7 @@ export const EndingBackgroundImage = styled.img<{ stage: number }>`
 `;
 
 export const EndingTitle = styled.div<{ visible?: boolean }>`
-    font-size: 8vw;
+    font-size: ${({ theme }) => theme.gameScaled(8)};
     color: white;
     margin-bottom: 3%;
 
@@ -43,7 +43,7 @@ export const EndingTitle = styled.div<{ visible?: boolean }>`
 `;
 
 export const EndingText = styled.div<{ visible?: boolean }>`
-    font-size: 3vw;
+    font-size: ${({ theme }) => theme.gameScaled(3)};
     color: white;
     text-align: center;
     margin-bottom: 3%;

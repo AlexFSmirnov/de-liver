@@ -47,7 +47,7 @@ export const ScoreCardTextContainer = styled.div`
     overflow: none;
 
     font-family: 'Joystix Monospace';
-    font-size: 1.5vw;
+    font-size: ${({ theme }) => theme.gameScaled(1.5)};
 
     display: flex;
     flex-direction: row;

@@ -5,8 +5,8 @@ export const SellCardContainer = styled.div`
     position: relative;
 
     width: 80%;
-    min-height: 7.05vw;
-    margin-bottom: 1vw;
+    min-height: ${({ theme }) => theme.gameScaled(7.05)};
+    margin-bottom: ${({ theme }) => theme.gameScaled(1)};
 `;
 
 export const SellCardImage = styled.img`
@@ -59,12 +59,12 @@ export const SellCardTextWrapper = styled.div`
 `;
 
 export const SellCardName = styled.div`
-    font-size: 1.1vw;
+    font-size: ${({ theme }) => theme.gameScaled(1.1)};
 `;
 
 export const SellCardDescription = styled.div<{ quality: OrganQuality }>`
-    font-size: 1vw;
-    margin-top: 1vw;
+    font-size: ${({ theme }) => theme.gameScaled(1)};
+    margin-top: ${({ theme }) => theme.gameScaled(1)};
 
     ${({ quality }) => {
         switch (quality) {
@@ -84,7 +84,7 @@ export const SellCardActionsWrapper = styled.div`
     padding: 0 2%;
     box-sizing: border-box;
 
-    font-size: 1.2vw;
+    font-size: ${({ theme }) => theme.gameScaled(1.2)};
 
     display: flex;
     flex-direction: column;

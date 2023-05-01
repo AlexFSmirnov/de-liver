@@ -18,6 +18,7 @@ import {
 } from '../../state';
 import { getRandomPersonOption, getRangeFromAge, PersonOption, PersonType } from './options';
 import {
+    CaptureChance,
     HuntBackgroundImage,
     HuntContainer,
     HuntPersonContainer,
@@ -160,9 +161,9 @@ const HuntBase: React.FC<HuntProps> = ({
                         </HuntPersonLongStatContainer>
                         <div style={{ flex: 1 }} />
                         <HuntPersonLongStatContainer>
-                            <span style={{ fontSize: '1.1vw' }}>
+                            <CaptureChance>
                                 Capture chance: {Math.round(captureProbability * 100)}%
-                            </span>
+                            </CaptureChance>
                         </HuntPersonLongStatContainer>
                     </HuntPersonDescriptionContainer>
                 </HuntPersonContainer>
