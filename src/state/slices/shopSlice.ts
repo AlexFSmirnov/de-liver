@@ -19,7 +19,7 @@ interface ShopState {
 }
 
 const initialState: ShopState = {
-    money: 0,
+    money: 80,
     surgeryToolsLevel: 1,
     captureToolsLevel: 0,
     surveillanceToolsLevel: 0,

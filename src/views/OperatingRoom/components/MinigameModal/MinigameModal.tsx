@@ -10,6 +10,7 @@ import {
     getCurrentMinigameOrgan,
     getCurrentTarget,
     getShopSurgeryToolsLevel,
+    increaseScore,
     navigateToScreen,
     sendRandomBubbleMessage,
     setHarvestComplete,
@@ -30,6 +31,7 @@ const connectMinigameModal = connect(
         navigateToScreen,
         sendRandomBubbleMessage,
         setHarvestComplete,
+        increaseScore,
     }
 );
 
@@ -53,6 +55,10 @@ const minigameModalImages = {
     largeIntestineTools3: PublicImage.LargeIntestineTools3,
 };
 
+const MIN_DAMAGE = 20;
+const LOW_DAMAGE = 60;
+const HIGH_DAMAGE = 150;
+
 const MinigameModalBase: React.FC<MinigameModalProps> = ({
     activeScreen,
     currentTarget,
@@ -63,6 +69,7 @@ const MinigameModalBase: React.FC<MinigameModalProps> = ({
     navigateToScreen,
     sendRandomBubbleMessage,
     setHarvestComplete,
+    increaseScore,
 }) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const linePreviewCanvasRef = useRef<HTMLCanvasElement>(null);
@@ -78,7 +85,7 @@ const MinigameModalBase: React.FC<MinigameModalProps> = ({
         right?: boolean;
     }>({});
 
-    // Danger 0 - no damage, <40 - light damage, <90 - high damage, >50 - fail
+    // Danger MIN_DAMAGE - no damage, <LOW_DAMAGE - light damage, <HIGH_DAMAGE - high damage, >50 - fail
     const [isDangerActive, setIsDangerActive] = useState(false);
     const [dangerCounter, setDangerCounter] = useState(0);
 
@@ -200,6 +207,7 @@ const MinigameModalBase: React.FC<MinigameModalProps> = ({
     useEffect(draw, [draw, canvasRef.current]);
 
     const processOrgan = (damage: 0 | 1 | 2 | 3, sendMessage = true) => {
+        console.log(damage, dangerCounter);
         if (!currentOrgan) {
             return;
         }
@@ -215,6 +223,7 @@ const MinigameModalBase: React.FC<MinigameModalProps> = ({
                         'Perfect! That cut was incredibly precise!',
                     ]);
 
+                increaseScore((quality + 1) * 15);
                 addOrgan({ organ, quality });
                 break;
             case 1:
@@ -311,11 +320,11 @@ const MinigameModalBase: React.FC<MinigameModalProps> = ({
                     crossedSegments.right
                 ) {
                     let damage: 0 | 1 | 2 | 3 = 0;
-                    if (dangerCounter === 0) {
+                    if (dangerCounter < MIN_DAMAGE) {
                         damage = 0;
-                    } else if (dangerCounter < 40) {
+                    } else if (dangerCounter < LOW_DAMAGE) {
                         damage = 1;
-                    } else if (dangerCounter < 90) {
+                    } else if (dangerCounter < HIGH_DAMAGE) {
                         damage = 2;
                     } else {
                         damage = 3;
@@ -353,12 +362,23 @@ const MinigameModalBase: React.FC<MinigameModalProps> = ({
 
             if (currentOrgan) {
                 const { quality } = currentOrgan;
+                let danger: 0 | 1 | 2 | 3 = 0;
+                if (dangerCounter < MIN_DAMAGE) {
+                    danger = 0;
+                } else if (dangerCounter < LOW_DAMAGE) {
+                    danger = 1;
+                } else if (dangerCounter < HIGH_DAMAGE) {
+                    danger = 2;
+                } else {
+                    danger = 3;
+                }
+
                 if (
-                    (quality === OrganQuality.Good && dangerCounter > 90) ||
-                    (quality === OrganQuality.Medium && dangerCounter > 40) ||
-                    (quality === OrganQuality.Bad && dangerCounter > 0)
+                    (quality === OrganQuality.Good && danger >= 3) ||
+                    (quality === OrganQuality.Medium && danger >= 2) ||
+                    (quality === OrganQuality.Bad && danger >= 1)
                 ) {
-                    processOrgan(3);
+                    processOrgan(danger);
 
                     if (currentOrgan?.organ === Organ.Kidneys) {
                         sendRandomBubbleMessage([

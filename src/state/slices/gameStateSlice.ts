@@ -48,7 +48,7 @@ const initialState: GameState = {
     currentTarget: null,
     currentMinigameOrgan: null,
     harvestComplete: false,
-    score: 13270,
+    score: 0,
     ending: null,
 };
 
