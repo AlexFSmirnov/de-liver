@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { PublicImage } from '../../common';
+import { PublicSound } from '../../common/enums/PublicSound';
 import {
     GameScreen,
     getActiveScreen,
@@ -11,6 +12,7 @@ import {
     getShopSurgeryToolsLevel,
     getShopSurveillanceToolsLevel,
     navigateToScreen,
+    playSound,
     setCaptureToolsLevel,
     setSurgeryToolsLevel,
     setSurveillanceToolsLevel,
@@ -48,6 +50,7 @@ const connectShop = connect(
         setCaptureToolsLevel,
         setSurveillanceToolsLevel,
         navigateToScreen,
+        playSound,
     }
 );
 
@@ -64,12 +67,29 @@ const ShopBase: React.FC<ShopProps> = ({
     surveillanceToolsLevel,
     shopOrgans,
     navigateToScreen,
+    playSound,
 }) => {
     const [sellOrganId, setSellOrganId] = useState<string | null>(null);
 
     const handleBackClick = () => {
         navigateToScreen(GameScreen.Main);
     };
+
+    const playClick = useCallback(() => {
+        playSound(PublicSound.MouseClick);
+    }, []);
+
+    useEffect(() => {
+        if (activeScreen === GameScreen.Shop) {
+            window.addEventListener('mousedown', playClick);
+        } else {
+            window.removeEventListener('mousedown', playClick);
+        }
+
+        return () => {
+            window.removeEventListener('mousedown', playClick);
+        };
+    }, [activeScreen]);
 
     return (
         <ShopContainer visible={activeScreen === GameScreen.Shop}>

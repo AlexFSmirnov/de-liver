@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { PublicImage } from '../../common';
+import { PublicSound } from '../../common/enums/PublicSound';
 import {
     getEnding,
     StoreProps,
@@ -9,6 +10,7 @@ import {
     getScore,
     resetGame,
     resetShop,
+    playSound,
 } from '../../state';
 import { EndingBackgroundImage, EndingContainer, EndingText, EndingTitle } from './style';
 
@@ -20,6 +22,7 @@ const connectEnding = connect(
     {
         resetGame,
         resetShop,
+        playSound,
     }
 );
 
@@ -41,7 +44,7 @@ const textByEnding = {
     [EndingType.UndercoverCop]: 'Unlucky! Traded with an undercover cop - handcuffs and jail time.',
 };
 
-const EndingBase: React.FC<EndingProps> = ({ ending, score, resetGame, resetShop }) => {
+const EndingBase: React.FC<EndingProps> = ({ ending, score, resetGame, resetShop, playSound }) => {
     const [image, setImage] = useState<PublicImage>(PublicImage.NoMoney);
     const [text, setText] = useState<string>('');
 
@@ -56,6 +59,10 @@ const EndingBase: React.FC<EndingProps> = ({ ending, score, resetGame, resetShop
             setImage(imageByEnding[ending]);
             setText(textByEnding[ending]);
             setEndingStage(1);
+
+            if (ending === EndingType.Cyborg || ending === EndingType.Reptiloid) {
+                playSound(PublicSound.TacoBell);
+            }
         }
     }, [ending]);
 

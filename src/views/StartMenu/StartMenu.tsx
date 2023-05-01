@@ -2,6 +2,7 @@ import { useCallback, useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { PublicImage } from '../../common';
+import { PublicSound } from '../../common/enums/PublicSound';
 import {
     StoreProps,
     resetGame,
@@ -9,6 +10,7 @@ import {
     navigateToScreen,
     getActiveScreen,
     GameScreen,
+    setBackgroundMusic,
 } from '../../state';
 import { StartMenuContainer, StartMenuText, StartMenuTitle } from './style';
 
@@ -18,12 +20,17 @@ const connectStartMenu = connect(
     }),
     {
         navigateToScreen,
+        setBackgroundMusic,
     }
 );
 
 type StartMenuProps = StoreProps<typeof connectStartMenu>;
 
-const StartMenuBase: React.FC<StartMenuProps> = ({ activeScreen, navigateToScreen }) => {
+const StartMenuBase: React.FC<StartMenuProps> = ({
+    activeScreen,
+    navigateToScreen,
+    setBackgroundMusic,
+}) => {
     const [image, setImage] = useState<PublicImage>(PublicImage.NoMoney);
     const [text, setText] = useState<string>('');
 
@@ -34,6 +41,10 @@ const StartMenuBase: React.FC<StartMenuProps> = ({ activeScreen, navigateToScree
         if (activeScreen !== GameScreen.Start || waitingForKey) {
             // eslint-disable-next-line @typescript-eslint/no-empty-function
             return () => {};
+        }
+
+        if (startMenuStage === 7) {
+            setBackgroundMusic(PublicSound.BackgroundMusic);
         }
 
         const timeout = setTimeout(() => {

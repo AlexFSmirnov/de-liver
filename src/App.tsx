@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { ThemeProvider } from 'styled-components';
 import { ASPECT_RATIO, BubbleMessage } from './common';
+import { SoundPlayer } from './common/components/SoundPlayer';
 import { AppContainer, GameContainer, GameContainerProps } from './style';
 import { Ending } from './views/Ending';
 import { Hunt } from './views/Hunt';
@@ -77,6 +78,7 @@ export const App: React.FC = () => {
                     <Hunt />
                     <Shop />
                     <BubbleMessage />
+                    <SoundPlayer />
                     <Ending />
                     <StartMenu />
                 </GameContainer>

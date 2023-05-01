@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { Organ, OrganQuality, PublicImage, usePublicImages } from '../../../../common';
+import { PublicSound } from '../../../../common/enums/PublicSound';
 import {
     addOrgan,
     clearMinigameOrgan,
@@ -12,6 +13,7 @@ import {
     getShopSurgeryToolsLevel,
     increaseScore,
     navigateToScreen,
+    playSound,
     sendRandomBubbleMessage,
     setHarvestComplete,
 } from '../../../../state';
@@ -32,6 +34,7 @@ const connectMinigameModal = connect(
         sendRandomBubbleMessage,
         setHarvestComplete,
         increaseScore,
+        playSound,
     }
 );
 
@@ -70,9 +73,11 @@ const MinigameModalBase: React.FC<MinigameModalProps> = ({
     sendRandomBubbleMessage,
     setHarvestComplete,
     increaseScore,
+    playSound,
 }) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const linePreviewCanvasRef = useRef<HTMLCanvasElement>(null);
+    const buzzerAudioRef = useRef<HTMLAudioElement>(null);
 
     const [canvasSize, setCanvasSize] = useState({ width: 0, height: 0 });
 
@@ -90,6 +95,23 @@ const MinigameModalBase: React.FC<MinigameModalProps> = ({
     const [dangerCounter, setDangerCounter] = useState(0);
 
     const images = usePublicImages(minigameModalImages);
+
+    useEffect(() => {
+        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+        // @ts-ignore
+        buzzerAudioRef.current = new Audio(PublicSound.Buzzer);
+        buzzerAudioRef.current.loop = true;
+    }, []);
+
+    useEffect(() => {
+        if (!buzzerAudioRef.current) return;
+        if (isDangerActive) {
+            buzzerAudioRef.current.currentTime = 0.5;
+            buzzerAudioRef.current.play();
+        } else {
+            buzzerAudioRef.current.pause();
+        }
+    }, [isDangerActive]);
 
     useEffect(() => {
         setIsMouseDown(false);
@@ -207,7 +229,6 @@ const MinigameModalBase: React.FC<MinigameModalProps> = ({
     useEffect(draw, [draw, canvasRef.current]);
 
     const processOrgan = (damage: 0 | 1 | 2 | 3, sendMessage = true) => {
-        console.log(damage, dangerCounter);
         if (!currentOrgan) {
             return;
         }
@@ -275,6 +296,7 @@ const MinigameModalBase: React.FC<MinigameModalProps> = ({
                 break;
         }
 
+        playSound(PublicSound.Scissors);
         clearMinigameOrgan();
     };
 
@@ -294,21 +316,24 @@ const MinigameModalBase: React.FC<MinigameModalProps> = ({
             return;
         }
 
+        const newCrossed = { ...crossedSegments };
         if (Math.abs(x - canvas.width / 2) < 10 && y < (canvas.height / 2) * 0.9) {
-            setCrossedSegments({ ...crossedSegments, top: true });
+            newCrossed.top = true;
         }
 
         if (Math.abs(x - canvas.width / 2) < 10 && y > (canvas.height / 2) * 1.1) {
-            setCrossedSegments({ ...crossedSegments, bottom: true });
+            newCrossed.bottom = true;
         }
 
         if (Math.abs(y - canvas.height / 2) < 10 && x < canvas.width / 2) {
-            setCrossedSegments({ ...crossedSegments, left: true });
+            newCrossed.left = true;
         }
 
         if (Math.abs(y - canvas.height / 2) < 10 && x > (canvas.width / 2) * 0.9) {
-            setCrossedSegments({ ...crossedSegments, right: true });
+            newCrossed.right = true;
         }
+
+        setCrossedSegments(newCrossed);
 
         for (let i = 0; i < Math.min(20, linePoints.length - 20); i++) {
             const { x: x1, y: y1 } = linePoints[i];
@@ -339,6 +364,7 @@ const MinigameModalBase: React.FC<MinigameModalProps> = ({
                     ]);
                     processOrgan(3, false);
                 }
+                playSound(PublicSound.Scissors);
                 clearMinigameOrgan();
 
                 if (currentOrgan?.organ === Organ.Kidneys) {
@@ -410,6 +436,7 @@ const MinigameModalBase: React.FC<MinigameModalProps> = ({
             "I had to extract it in a single motion. The organ is now worthless, I'll need to watch out for the following one.",
         ]);
 
+        playSound(PublicSound.Scissors);
         clearMinigameOrgan();
 
         if (currentOrgan?.organ === Organ.Kidneys) {

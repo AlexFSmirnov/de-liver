@@ -2,6 +2,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { isPointInRect, maybeDrawImage, PublicImage, usePublicImages } from '../../../../common';
+import { PublicSound } from '../../../../common/enums/PublicSound';
 import {
     Ending,
     GameScreen,
@@ -9,6 +10,8 @@ import {
     getCurrentTarget,
     getIsHarvestComplete,
     navigateToScreen,
+    playSound,
+    setBackgroundMusic,
     setEnding,
 } from '../../../../state';
 import { StoreProps } from '../../../../state/store';
@@ -24,6 +27,8 @@ const connectMainCanvas = connect(
     {
         navigateToScreen,
         setEnding,
+        playSound,
+        setBackgroundMusic,
     }
 );
 
@@ -48,6 +53,8 @@ const MainCanvasBase: React.FC<MainCanvasProps> = ({
     isHarvestComplete,
     navigateToScreen,
     setEnding,
+    playSound,
+    setBackgroundMusic,
 }) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -116,6 +123,7 @@ const MainCanvasBase: React.FC<MainCanvasProps> = ({
         }
 
         if (isHarvestHovered) {
+            playSound(PublicSound.Zipper);
             navigateToScreen(GameScreen.Operating);
         }
     };

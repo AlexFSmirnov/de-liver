@@ -225,7 +225,6 @@ const HarvestCanvasBase: React.FC<HarvestCanvasProps> = ({
 
         setIsMouseOverCurrentOrgan(false);
 
-        // TODO: Add visuals for reptiloids and cyborgs
         const { quality } = currentTarget;
         switch (currentHarvestStage) {
             case HarvestStage.Liver:

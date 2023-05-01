@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { PublicImage } from '../../common';
+import { PublicSound } from '../../common/enums/PublicSound';
 import {
     Ending,
     GameScreen,
@@ -10,6 +11,7 @@ import {
     getShopMoney,
     getShopSurveillanceToolsLevel,
     navigateToScreen,
+    playSound,
     sendRandomBubbleMessage,
     setCurrentTarget,
     setEnding,
@@ -42,6 +44,7 @@ const connectHunt = connect(
         setCurrentTarget,
         setMoney,
         setEnding,
+        playSound,
     }
 );
 
@@ -57,6 +60,7 @@ const HuntBase: React.FC<HuntProps> = ({
     setCurrentTarget,
     setMoney,
     setEnding,
+    playSound,
 }) => {
     const [options, setOptions] = useState<PersonOption[]>([]);
 
@@ -81,6 +85,7 @@ const HuntBase: React.FC<HuntProps> = ({
                 'Effortless victory, they never saw it coming.',
                 'One more target acquired, unstoppable as always!',
             ]);
+            playSound(PublicSound.CaptureSuccess);
             setCurrentTarget({
                 quality: organQuality,
                 isReptiloid: type === PersonType.Reptiloid,
@@ -99,6 +104,7 @@ const HuntBase: React.FC<HuntProps> = ({
                 return;
             }
 
+            playSound(PublicSound.CaptureFail);
             setMoney(playerMoney - fine);
 
             if (type === PersonType.Sports) {
