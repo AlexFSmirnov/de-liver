@@ -22,6 +22,14 @@ interface MinigameOrgan {
     quality: OrganQuality;
 }
 
+export enum Ending {
+    CrimeBoss = 'CrimeBoss',
+    Reptiloid = 'Reptiloid',
+    Cyborg = 'Cyborg',
+    NoMoney = 'NoMoney',
+    UndercoverCop = 'UndercoverCop',
+}
+
 interface GameState {
     activeScreen: GameScreen;
 
@@ -31,6 +39,8 @@ interface GameState {
     harvestComplete: boolean;
 
     score: number;
+
+    ending: Ending | null;
 }
 
 const initialState: GameState = {
@@ -38,7 +48,8 @@ const initialState: GameState = {
     currentTarget: null,
     currentMinigameOrgan: null,
     harvestComplete: false,
-    score: 0,
+    score: 13270,
+    ending: null,
 };
 
 export const gameStateSlice = createSlice({
@@ -67,6 +78,12 @@ export const gameStateSlice = createSlice({
         increaseScore: (state, action: PayloadAction<number>) => {
             state.score += action.payload;
         },
+        setEnding: (state, action: PayloadAction<Ending>) => {
+            state.ending = action.payload;
+        },
+        resetGame: () => {
+            return { ...initialState };
+        },
     },
 });
 
@@ -77,6 +94,8 @@ export const {
     setHarvestComplete,
     setCurrentTarget,
     increaseScore,
+    setEnding,
+    resetGame,
 } = gameStateSlice.actions;
 
 export const getGameState = (state: State) => state.gameState;
@@ -91,5 +110,7 @@ export const getCurrentMinigameOrgan = createSelector(
 export const getIsHarvestComplete = createSelector(getGameState, (state) => state.harvestComplete);
 
 export const getScore = createSelector(getGameState, (state) => state.score);
+
+export const getEnding = createSelector(getGameState, (state) => state.ending);
 
 export default gameStateSlice.reducer;

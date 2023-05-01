@@ -22,7 +22,7 @@ const initialState: ShopState = {
     money: 5000,
     surgeryToolsLevel: 1,
     captureToolsLevel: 0,
-    surveillanceToolsLevel: 5,
+    surveillanceToolsLevel: 0,
     organs: {},
 };
 
@@ -56,6 +56,7 @@ export const shopSlice = createSlice({
         setSurveillanceToolsLevel: (state, action: PayloadAction<number>) => {
             state.surveillanceToolsLevel = action.payload;
         },
+        resetShop: () => ({ ...initialState }),
     },
 });
 
@@ -67,6 +68,7 @@ export const {
     setSurgeryToolsLevel,
     setCaptureToolsLevel,
     setSurveillanceToolsLevel,
+    resetShop,
 } = shopSlice.actions;
 
 export const getShopState = (state: State) => state.shop;

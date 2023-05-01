@@ -5,6 +5,7 @@ import { ASPECT_RATIO, BubbleMessage, CANVAS_HEIGHT, CANVAS_WIDTH } from './comm
 import { GameScreen, getActiveScreen } from './state';
 import { StoreProps } from './state/store';
 import { AppContainer, GameContainer, GameContainerProps } from './style';
+import { Ending } from './views/Ending';
 import { Hunt } from './views/Hunt';
 import { OperatingRoom } from './views/OperatingRoom';
 import { Shop } from './views/Shop';
@@ -73,6 +74,7 @@ const AppBase: React.FC<AppProps> = ({ activeScreen }) => {
                 <OperatingRoom containerSize={gameContainerPosition} />
                 <Hunt />
                 <Shop />
+                <Ending />
                 <BubbleMessage />
             </GameContainer>
         </AppContainer>

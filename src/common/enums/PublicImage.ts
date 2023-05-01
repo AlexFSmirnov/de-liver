@@ -89,4 +89,11 @@ export enum PublicImage {
     BuyerShady = 'shop/Buyer-shady.png',
     BuyerHospital = 'shop/Buyer-hospital.png',
     BuyerJake = 'shop/Buyer-Jake.png',
+
+    // Endings
+    CrimeBoss = 'endings/Crime-boss.png',
+    Cyborg = 'endings/Cyborg.png',
+    Reptiloid = 'endings/Reptiloid.png',
+    NoMoney = 'endings/No-money.png',
+    UndercoverCop = 'endings/Undercover-cop.png',
 }

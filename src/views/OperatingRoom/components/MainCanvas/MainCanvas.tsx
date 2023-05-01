@@ -3,11 +3,13 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 import { isPointInRect, maybeDrawImage, PublicImage, usePublicImages } from '../../../../common';
 import {
+    Ending,
     GameScreen,
     getActiveScreen,
     getCurrentTarget,
     getIsHarvestComplete,
     navigateToScreen,
+    setEnding,
 } from '../../../../state';
 import { StoreProps } from '../../../../state/store';
 import { Canvas } from '../Canvas';
@@ -21,6 +23,7 @@ const connectMainCanvas = connect(
     }),
     {
         navigateToScreen,
+        setEnding,
     }
 );
 
@@ -44,6 +47,7 @@ const MainCanvasBase: React.FC<MainCanvasProps> = ({
     currentTarget,
     isHarvestComplete,
     navigateToScreen,
+    setEnding,
 }) => {
     const canvasRef = useRef<HTMLCanvasElement>(null);
 
